@@ -1,0 +1,106 @@
+---
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const pageTitle = `${project.title} / CRYBABY912`;
+const pageDescription = `${project.title} 项目详情，${project.description}`;
+const canonicalURL = new URL(`/projects/${project.slug}/`, Astro.site);
+const socialImage = new URL(project.cover, Astro.site);
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={pageDescription} />
+    <meta name="theme-color" content="#111416" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#content">跳到主要内容</a>
+    <div class="page-shell">
+      <header class="detail-header">
+        <a class="brand" href="/" aria-label="返回首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
+        <a class="back-link" href="/">返回作品集 <span>↗</span></a>
+      </header>
+
+      <main id="content">
+        <section class="detail-hero">
+          <div class="detail-hero-copy">
+            <p class="eyebrow"><span class="status-dot"></span>{project.eyebrow} / {project.year}</p>
+            <h1>{project.title}</h1>
+            <p class="lead">{project.summary}</p>
+            <div class="hero-meta"><span>{project.role}</span><span>{project.platforms.length} 个运行端</span></div>
+          </div>
+          <div class="detail-cover" style={`background-image: url('${project.cover}')`} role="img" aria-label={`${project.title} 项目视觉`}></div>
+        </section>
+
+        <section class="content-section intro-section">
+          <div><p class="section-kicker">01 / OVERVIEW</p><h2>从一顿饭开始，<br /><span>把业务链路跑通。</span></h2></div>
+          <div class="intro-copy"><p>{project.description}</p><a class="source-link" href={project.github} target="_blank" rel="noreferrer">查看 GitHub 源码 <span>↗</span></a></div>
+        </section>
+
+        <section id="key-decisions" class="content-section highlight-section">
+          <div class="section-title"><p class="section-kicker">02 / KEY DECISIONS</p><h2>我重点解决了<br /><span>这些问题。</span></h2></div>
+          <div class="highlight-list">
+            {project.highlights.map((item, index) => (
+              <article class="highlight-item">
+                <span class="item-number">0{index + 1}</span>
+                <div><h3>{item.title}</h3><p>{item.description}</p></div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="content-section architecture-section">
+          <div class="section-title"><p class="section-kicker">03 / SYSTEM MAP</p><h2>一条业务链，<br /><span>多个可靠边界。</span></h2></div>
+          <div class="architecture-map">
+            {project.architecture.map((layer, index) => <div class="architecture-row"><span>0{index + 1}</span><b>{layer}</b><i>{index === 0 ? '体验入口' : index === project.architecture.length - 1 ? '智能增强' : '业务基础'}</i></div>)}
+          </div>
+        </section>
+
+        <section class="detail-cta"><p class="section-kicker">NEXT ITERATION</p><h2>还有问题，<br /><em>继续把它做深。</em></h2><a class="cta-link" href="/">回到全部项目 <span>↗</span></a></section>
+      </main>
+
+      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><a href="/">作品集首页 ↑</a></footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(*) { box-sizing: border-box; }
+  :global(html) { background: #111416; }
+  :global(body) { background: #111416; color: #f1eee6; font-family: Arial, "Microsoft YaHei", sans-serif; line-height: 1.6; margin: 0; overflow-x: hidden; }
+  :global(a) { color: inherit; text-decoration: none; }
+  .skip-link { background: #9ce7c3; color: #111416; font-size: 13px; left: 18px; padding: 9px 13px; position: fixed; top: 12px; transform: translateY(-150%); transition: transform .2s ease; z-index: 20; }.skip-link:focus { transform: translateY(0); }
+  .page-shell { overflow-x: clip; }
+  .detail-header { align-items: center; display: flex; height: 80px; justify-content: space-between; padding: 0 clamp(24px, 8vw, 132px); }
+  .brand { align-items: center; display: flex; font-size: 13px; font-weight: 700; gap: 11px; letter-spacing: .16em; }.brand-mark { align-items: center; border: 1px solid rgba(241,238,230,.8); border-radius: 50%; display: inline-flex; font-size: 11px; height: 30px; justify-content: center; letter-spacing: 0; width: 30px; }
+  .back-link, .source-link, .cta-link { color: #f7a779; font-size: 12px; letter-spacing: .08em; }.back-link span, .source-link span, .cta-link span { margin-left: 7px; }
+  .detail-hero { align-items: stretch; display: grid; grid-template-columns: 1fr 1fr; min-height: 650px; }.detail-hero-copy { align-self: center; padding: 90px clamp(24px, 8vw, 132px); }.eyebrow, .section-kicker { color: #f7a779; font-size: 11px; font-weight: 700; letter-spacing: .16em; margin: 0 0 28px; text-transform: uppercase; }.status-dot { background: #9ce7c3; border-radius: 50%; box-shadow: 0 0 0 5px rgba(156,231,195,.12); display: inline-block; height: 7px; margin-right: 10px; width: 7px; }
+  h1, h2, h3, p { margin-top: 0; }.detail-hero h1 { font-size: 118px; font-weight: 500; letter-spacing: 0; line-height: .92; margin: 0 0 40px; overflow-wrap: anywhere; }.lead { color: rgba(241,238,230,.62); font-size: 17px; line-height: 1.8; max-width: 450px; }.hero-meta { border-top: 1px solid rgba(241,238,230,.2); color: rgba(241,238,230,.45); display: flex; font-size: 11px; gap: 26px; margin-top: 70px; padding-top: 15px; }.detail-cover { background-position: center; background-size: cover; min-height: 500px; position: relative; }.detail-cover::after { background: rgba(17,20,22,.3); content: ''; inset: 0; position: absolute; }
+  .content-section { padding: 140px clamp(24px, 8vw, 132px); scroll-margin-top: 28px; }.intro-section { background: #e8e4d9; color: #202624; display: grid; gap: 30px; grid-template-columns: 1.2fr .8fr; }.intro-section .section-kicker, .highlight-section .section-kicker, .architecture-section .section-kicker { color: #b94f36; }.content-section h2 { font-size: 72px; font-weight: 500; letter-spacing: 0; line-height: 1; margin: 0; }.content-section h2 span { color: #b94f36; }.intro-copy { align-self: end; max-width: 410px; }.intro-copy p { font-size: 18px; line-height: 1.8; }.source-link { border-bottom: 1px solid #b94f36; color: #b94f36; display: inline-block; margin-top: 28px; padding-bottom: 4px; }
+  .highlight-section { display: grid; gap: 50px; grid-template-columns: .8fr 1.2fr; }.highlight-list { border-top: 1px solid rgba(241,238,230,.2); }.highlight-item { border-bottom: 1px solid rgba(241,238,230,.2); display: grid; gap: 35px; grid-template-columns: 40px 1fr; padding: 32px 0 35px; }.item-number { color: #f7a779; font-size: 12px; }.highlight-item h3 { font-size: 27px; font-weight: 500; letter-spacing: -.04em; margin-bottom: 12px; }.highlight-item p { color: rgba(241,238,230,.54); font-size: 15px; line-height: 1.8; margin: 0; max-width: 500px; }
+  .architecture-section { background: #f7a779; color: #202624; display: grid; gap: 50px; grid-template-columns: .8fr 1.2fr; }.architecture-map { border-top: 1px solid rgba(32,38,36,.35); }.architecture-row { align-items: center; border-bottom: 1px solid rgba(32,38,36,.35); display: grid; gap: 20px; grid-template-columns: 35px 1fr auto; padding: 23px 0; }.architecture-row span { color: #b94f36; font-size: 11px; }.architecture-row b { font-size: 19px; font-weight: 500; }.architecture-row i { color: rgba(32,38,36,.58); font-size: 10px; font-style: normal; letter-spacing: .1em; text-transform: uppercase; }
+  .detail-cta { padding: 145px clamp(24px, 8vw, 132px); }.detail-cta h2 { font-size: 100px; font-weight: 500; letter-spacing: 0; line-height: .92; margin-bottom: 55px; }.detail-cta em { color: #f7a779; font-style: normal; }.cta-link { border-bottom: 1px solid #f7a779; display: inline-block; padding-bottom: 5px; }
+  .detail-footer { border-top: 1px solid rgba(241,238,230,.16); color: rgba(241,238,230,.42); display: flex; font-size: 10px; justify-content: space-between; letter-spacing: .12em; padding: 25px clamp(24px, 8vw, 132px); }.detail-footer a { color: #f7a779; }
+  a:focus-visible { outline: 2px solid #9ce7c3; outline-offset: 5px; }
+  @media (max-width: 1200px) { .detail-hero h1 { font-size: 92px; }.content-section h2 { font-size: 60px; }.detail-cta h2 { font-size: 82px; } }
+  @media (max-width: 800px) { .detail-header { height: 68px; }.brand { font-size: 11px; }.detail-hero, .intro-section, .highlight-section, .architecture-section { display: block; }.detail-hero-copy { min-width: 0; padding: 90px 24px 70px; width: 100%; }.detail-hero h1 { font-size: 60px; line-height: .98; max-width: 342px; }.lead { font-size: 15px; max-width: 342px; overflow-wrap: anywhere; word-break: break-all; }.hero-meta { flex-wrap: wrap; margin-top: 48px; max-width: 342px; }.detail-cover { min-height: 390px; }.content-section { min-width: 0; padding: 90px 24px; }.content-section h2 { font-size: 44px; max-width: 342px; overflow-wrap: anywhere; }.intro-copy, .highlight-list, .architecture-map { margin-top: 50px; max-width: 342px; min-width: 0; }.highlight-item { gap: 16px; grid-template-columns: 30px minmax(0, 1fr); }.highlight-item p, .intro-copy p { overflow-wrap: anywhere; }.architecture-row { grid-template-columns: 28px minmax(0, 1fr); }.architecture-row i { grid-column: 2; }.detail-cta { padding: 100px 24px; }.detail-cta h2 { font-size: 58px; max-width: 342px; overflow-wrap: anywhere; }.detail-footer { align-items: flex-start; flex-direction: column; gap: 12px; } }
+</style>

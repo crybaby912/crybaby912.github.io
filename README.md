@@ -1,43 +1,67 @@
-# Astro Starter Kit: Minimal
+# CRYBABY912 Portfolio
 
-```sh
-npm create astro@latest -- --template minimal
+基于 Astro 的个人项目作品集，展示全栈系统、AI 应用和产品实践。
+
+## 本地开发
+
+项目要求 Node.js `>=22.12.0`。当前 Windows 环境的 Node 24 位于 `D:\Java_App`，如果终端仍优先使用旧版 Node，可以先执行：
+
+```powershell
+$env:Path = "D:\Java_App;$env:Path"
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+安装依赖并启动开发服务器：
 
-## 🚀 Project Structure
+```powershell
+npm install
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+打开 <http://localhost:4321>。
+
+构建生产版本：
+
+```powershell
+npm run build
+npm run preview
+```
+
+## 目录说明
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├─ data/projects.ts              项目数据，新增项目从这里开始
+└─ pages/
+   ├─ index.astro                作品集首页
+   ├─ 404.astro                  GitHub Pages 自定义 404
+   └─ projects/[slug].astro      项目详情页模板
+public/
+└─ food-hero.jpg                 项目视觉素材
+.github/workflows/deploy.yml     GitHub Pages 自动部署
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 新增项目
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+在 `src/data/projects.ts` 的 `projects` 数组中添加一个项目对象，填写 `slug`、项目描述、技术栈、亮点和架构信息。详情页会根据 `slug` 自动生成，首页也会把第一项之外的项目加入更多项目列表，例如：
 
-Any static assets, like images, can be placed in the `public/` directory.
+```text
+/projects/your-project-slug/
+```
 
-## 🧞 Commands
+项目图片放入 `public/`，并在数据中的 `cover` 使用以 `/` 开头的路径。
 
-All commands are run from the root of the project, from a terminal:
+## GitHub Pages 部署
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+仓库名称应为：
 
-## 👀 Want to learn more?
+```text
+crybaby912.github.io
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+推送到 `main` 分支后，`.github/workflows/deploy.yml` 会自动构建并部署。首次使用时，在仓库的 `Settings → Pages` 中将 Source 设置为 `GitHub Actions`。
+
+站点地址配置在 `astro.config.mjs`：
+
+```js
+site: 'https://crybaby912.github.io'
+```
