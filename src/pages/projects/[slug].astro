@@ -1,5 +1,6 @@
 ---
 import { projects } from '../../data/projects';
+import '../../styles/site.css';
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -10,7 +11,7 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const pageTitle = `${project.title} / CRYBABY912`;
-const pageDescription = `${project.title} 项目详情，${project.description}`;
+const pageDescription = `${project.title} 项目案例：${project.description}`;
 const canonicalURL = new URL(`/projects/${project.slug}/`, Astro.site);
 const socialImage = new URL(project.cover, Astro.site);
 ---
@@ -20,7 +21,7 @@ const socialImage = new URL(project.cover, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#111416" />
+    <meta name="theme-color" content="#f5f2ea" />
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={pageTitle} />
@@ -34,73 +35,106 @@ const socialImage = new URL(project.cover, Astro.site);
   </head>
   <body id="top">
     <a class="skip-link" href="#content">跳到主要内容</a>
-    <div class="page-shell">
-      <header class="detail-header">
-        <a class="brand" href="/" aria-label="返回首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
-        <a class="back-link" href="/">返回作品集 <span>↗</span></a>
+    <div class="site-shell detail-shell">
+      <header class="detail-top">
+        <div class="container">
+          <a class="brand" href="/" aria-label="返回作品集首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
+          <a class="back-link" href="/">← 返回全部项目</a>
+        </div>
       </header>
 
       <main id="content">
         <section class="detail-hero">
-          <div class="detail-hero-copy">
-            <p class="eyebrow"><span class="status-dot"></span>{project.eyebrow} / {project.year}</p>
-            <h1>{project.title}</h1>
-            <p class="lead">{project.summary}</p>
-            <div class="hero-meta"><span>{project.role}</span><span>{project.platforms.length} 个运行端</span></div>
-          </div>
-          <div class="detail-cover" style={`background-image: url('${project.cover}')`} role="img" aria-label={`${project.title} 项目视觉`}></div>
-        </section>
-
-        <section class="content-section intro-section">
-          <div><p class="section-kicker">01 / OVERVIEW</p><h2>{project.introHeading}<br /><span>{project.introAccent}</span></h2></div>
-          <div class="intro-copy"><p>{project.description}</p><a class="source-link" href={project.github} target="_blank" rel="noreferrer">查看 GitHub 源码 <span>↗</span></a></div>
-        </section>
-
-        <section id="key-decisions" class="content-section highlight-section">
-          <div class="section-title"><p class="section-kicker">02 / KEY DECISIONS</p><h2>{project.highlightHeading}<br /><span>{project.highlightAccent}</span></h2></div>
-          <div class="highlight-list">
-            {project.highlights.map((item, index) => (
-              <article class="highlight-item">
-                <span class="item-number">0{index + 1}</span>
-                <div><h3>{item.title}</h3><p>{item.description}</p></div>
-              </article>
-            ))}
+          <div class="container detail-hero-grid">
+            <div>
+              <p class="eyebrow">{project.category} / {project.year}</p>
+              <h1 class="detail-title">{project.title}</h1>
+              <p class="detail-lead">{project.summary}</p>
+              <dl class="detail-meta">
+                <div><dt>项目状态</dt><dd>{project.status}</dd></div>
+                <div><dt>我的角色</dt><dd>{project.role}</dd></div>
+                <div><dt>运行端</dt><dd>{project.platforms.length} 个端 / 服务</dd></div>
+              </dl>
+              <div class="hero-actions"><a class="button button-primary" href={project.github} target="_blank" rel="noreferrer">查看源代码 <span>↗</span></a><a class="button button-quiet" href="#incidents">直接看 Bug 复盘 <span>↓</span></a></div>
+            </div>
+            <figure class={`detail-media ${project.coverFit === 'contain' ? 'is-contain' : 'is-cover'}`}>
+              <span class="media-caption">VISUAL / PROJECT PREVIEW</span>
+              <img src={project.cover} alt={`${project.title} 项目演示`} loading="eager" />
+            </figure>
           </div>
         </section>
 
-        <section class="content-section architecture-section">
-          <div class="section-title"><p class="section-kicker">03 / SYSTEM MAP</p><h2>{project.architectureHeading}<br /><span>{project.architectureAccent}</span></h2></div>
-          <div class="architecture-map">
-            {project.architecture.map((layer, index) => <div class="architecture-row"><span>0{index + 1}</span><b>{layer}</b><i>{index === 0 ? '体验入口' : index === project.architecture.length - 1 ? '智能增强' : '业务基础'}</i></div>)}
+        <section class="detail-metrics" aria-label="项目结果">
+          <div class="container metric-grid">
+            {project.metrics.map((metric) => <div class="metric-card"><span class="metric-value">{metric.value}</span><span class="metric-label">{metric.label}</span><span class="metric-note">{metric.note}</span></div>)}
           </div>
         </section>
 
-        <section class="detail-cta"><p class="section-kicker">NEXT ITERATION</p><h2>{project.ctaHeading}<br /><em>{project.ctaAccent}</em></h2><a class="cta-link" href="/">回到全部项目 <span>↗</span></a></section>
+        <section class="detail-section">
+          <div class="container section-split">
+            <div><p class="section-label">01 / THE PROBLEM</p><h2 class="section-title">{project.problem.title}</h2></div>
+            <div><p class="problem-body">{project.problem.body}</p><ul class="constraint-list">{project.problem.constraints.map((constraint) => <li>{constraint}</li>)}</ul></div>
+          </div>
+        </section>
+
+        <section class="detail-section alt">
+          <div class="container section-split">
+            <div><p class="section-label">02 / BUILD PATH</p><h2 class="section-title">功能如何落到<br /><em>可运行的系统里。</em></h2></div>
+            <div class="workflow-grid">
+              {project.workflow.map((step) => <article class="workflow-card"><span class="workflow-step">{step.step}</span><h3>{step.title}</h3><p>{step.body}</p><div class="workflow-artifact">{step.artifact}</div></article>)}
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <div class="container section-split">
+            <div><p class="section-label">03 / SYSTEM MAP</p><h2 class="section-title">每一层都有<br /><em>自己的边界。</em></h2></div>
+            <div class="architecture-list">
+              {project.architecture.map((layer) => <article class="architecture-row"><div class="architecture-layer">{layer.layer}</div><div><h3>{layer.title}</h3><p>{layer.body}</p></div><div class="architecture-tags">{layer.tags.map((tag) => <span>{tag}</span>)}</div></article>)}
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-section alt">
+          <div class="container section-split">
+            <div><p class="section-label">04 / KEY DECISIONS</p><h2 class="section-title">不是堆技术，<br /><em>而是明确取舍。</em></h2></div>
+            <div class="decision-list">
+              {project.decisions.map((decision) => <article class="decision-card"><h3>{decision.title}</h3><dl class="decision-field"><dt>问题</dt><dd>{decision.problem}</dd></dl><dl class="decision-field"><dt>决定</dt><dd>{decision.decision}</dd></dl><dl class="decision-field"><dt>结果</dt><dd>{decision.result}</dd></dl></article>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="incidents" class="detail-section incident-section">
+          <div class="container">
+            <p class="section-label">05 / INCIDENT NOTES</p>
+            <h2 class="section-title">真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
+            <p class="section-copy">下面挑选的是会改变系统设计的故障，而不是纯粹的文案或样式调整。每条记录都保留现象、根因、修复和最终留下的工程判断。</p>
+            <div class="incident-grid">
+              {project.incidents.map((incident, index) => <article class="incident-card"><span class="incident-number">BUG 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-section evidence-section">
+          <div class="container section-split">
+            <div><p class="section-label">06 / EVIDENCE</p><h2 class="section-title">让结果可以被<br /><em>别人复核。</em></h2></div>
+            <div>
+              <p class="section-copy">数字只在边界清楚时才有意义。这里标注测试环境、验收范围和仍然没有宣称完成的部分。</p>
+              <div class="evidence-grid">{project.evidence.map((item) => <article class="evidence-card"><span class="evidence-value">{item.value}</span><strong>{item.label}</strong><p>{item.detail}</p></article>)}</div>
+              <div class="next-list">{project.nextSteps.map((nextStep, index) => <div class="next-item"><span>NEXT 0{index + 1}</span><p>{nextStep}</p></div>)}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-cta">
+          <div class="container detail-cta-grid">
+            <div><p class="section-label">SOURCE / NEXT ITERATION</p><h2>看完实现路径，<br /><em>再回到代码里验证。</em></h2></div>
+            <a class="button button-quiet" href={project.github} target="_blank" rel="noreferrer">打开 GitHub <span>↗</span></a>
+          </div>
+        </section>
       </main>
 
-      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><a href="/">作品集首页 ↑</a></footer>
+      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><span>{project.title} / CASE STUDY</span><a href="#top">回到顶部 ↑</a></footer>
     </div>
   </body>
 </html>
-
-<style>
-  :global(*) { box-sizing: border-box; }
-  :global(html) { background: #111416; }
-  :global(body) { background: #111416; color: #f1eee6; font-family: Arial, "Microsoft YaHei", sans-serif; line-height: 1.6; margin: 0; overflow-x: hidden; }
-  :global(a) { color: inherit; text-decoration: none; }
-  .skip-link { background: #9ce7c3; color: #111416; font-size: 13px; left: 18px; padding: 9px 13px; position: fixed; top: 12px; transform: translateY(-150%); transition: transform .2s ease; z-index: 20; }.skip-link:focus { transform: translateY(0); }
-  .page-shell { overflow-x: clip; }
-  .detail-header { align-items: center; display: flex; height: 80px; justify-content: space-between; padding: 0 clamp(24px, 8vw, 132px); }
-  .brand { align-items: center; display: flex; font-size: 13px; font-weight: 700; gap: 11px; letter-spacing: .16em; }.brand-mark { align-items: center; border: 1px solid rgba(241,238,230,.8); border-radius: 50%; display: inline-flex; font-size: 11px; height: 30px; justify-content: center; letter-spacing: 0; width: 30px; }
-  .back-link, .source-link, .cta-link { color: #f7a779; font-size: 12px; letter-spacing: .08em; }.back-link span, .source-link span, .cta-link span { margin-left: 7px; }
-  .detail-hero { align-items: stretch; display: grid; grid-template-columns: 1fr 1fr; min-height: 650px; }.detail-hero-copy { align-self: center; padding: 90px clamp(24px, 8vw, 132px); }.eyebrow, .section-kicker { color: #f7a779; font-size: 11px; font-weight: 700; letter-spacing: .16em; margin: 0 0 28px; text-transform: uppercase; }.status-dot { background: #9ce7c3; border-radius: 50%; box-shadow: 0 0 0 5px rgba(156,231,195,.12); display: inline-block; height: 7px; margin-right: 10px; width: 7px; }
-  h1, h2, h3, p { margin-top: 0; }.detail-hero h1 { font-size: 118px; font-weight: 500; letter-spacing: 0; line-height: .92; margin: 0 0 40px; overflow-wrap: anywhere; }.lead { color: rgba(241,238,230,.62); font-size: 17px; line-height: 1.8; max-width: 450px; }.hero-meta { border-top: 1px solid rgba(241,238,230,.2); color: rgba(241,238,230,.45); display: flex; font-size: 11px; gap: 26px; margin-top: 70px; padding-top: 15px; }.detail-cover { background-position: center; background-size: cover; min-height: 500px; position: relative; }.detail-cover::after { background: rgba(17,20,22,.3); content: ''; inset: 0; position: absolute; }
-  .content-section { padding: 140px clamp(24px, 8vw, 132px); scroll-margin-top: 28px; }.intro-section { background: #e8e4d9; color: #202624; display: grid; gap: 30px; grid-template-columns: 1.2fr .8fr; }.intro-section .section-kicker, .highlight-section .section-kicker, .architecture-section .section-kicker { color: #b94f36; }.content-section h2 { font-size: 72px; font-weight: 500; letter-spacing: 0; line-height: 1; margin: 0; }.content-section h2 span { color: #b94f36; }.intro-copy { align-self: end; max-width: 410px; }.intro-copy p { font-size: 18px; line-height: 1.8; }.source-link { border-bottom: 1px solid #b94f36; color: #b94f36; display: inline-block; margin-top: 28px; padding-bottom: 4px; }
-  .highlight-section { display: grid; gap: 50px; grid-template-columns: .8fr 1.2fr; }.highlight-list { border-top: 1px solid rgba(241,238,230,.2); }.highlight-item { border-bottom: 1px solid rgba(241,238,230,.2); display: grid; gap: 35px; grid-template-columns: 40px 1fr; padding: 32px 0 35px; }.item-number { color: #f7a779; font-size: 12px; }.highlight-item h3 { font-size: 27px; font-weight: 500; letter-spacing: -.04em; margin-bottom: 12px; }.highlight-item p { color: rgba(241,238,230,.54); font-size: 15px; line-height: 1.8; margin: 0; max-width: 500px; }
-  .architecture-section { background: #f7a779; color: #202624; display: grid; gap: 50px; grid-template-columns: .8fr 1.2fr; }.architecture-map { border-top: 1px solid rgba(32,38,36,.35); }.architecture-row { align-items: center; border-bottom: 1px solid rgba(32,38,36,.35); display: grid; gap: 20px; grid-template-columns: 35px 1fr auto; padding: 23px 0; }.architecture-row span { color: #b94f36; font-size: 11px; }.architecture-row b { font-size: 19px; font-weight: 500; }.architecture-row i { color: rgba(32,38,36,.58); font-size: 10px; font-style: normal; letter-spacing: .1em; text-transform: uppercase; }
-  .detail-cta { padding: 145px clamp(24px, 8vw, 132px); }.detail-cta h2 { font-size: 100px; font-weight: 500; letter-spacing: 0; line-height: .92; margin-bottom: 55px; }.detail-cta em { color: #f7a779; font-style: normal; }.cta-link { border-bottom: 1px solid #f7a779; display: inline-block; padding-bottom: 5px; }
-  .detail-footer { border-top: 1px solid rgba(241,238,230,.16); color: rgba(241,238,230,.42); display: flex; font-size: 10px; justify-content: space-between; letter-spacing: .12em; padding: 25px clamp(24px, 8vw, 132px); }.detail-footer a { color: #f7a779; }
-  a:focus-visible { outline: 2px solid #9ce7c3; outline-offset: 5px; }
-  @media (max-width: 1200px) { .detail-hero h1 { font-size: 92px; }.content-section h2 { font-size: 60px; }.detail-cta h2 { font-size: 82px; } }
-  @media (max-width: 800px) { .detail-header { height: 68px; }.brand { font-size: 11px; }.detail-hero, .intro-section, .highlight-section, .architecture-section { display: block; }.detail-hero-copy { min-width: 0; padding: 90px 24px 70px; width: 100%; }.detail-hero h1 { font-size: 60px; line-height: .98; max-width: 342px; }.lead { font-size: 15px; max-width: 342px; overflow-wrap: anywhere; word-break: break-all; }.hero-meta { flex-wrap: wrap; margin-top: 48px; max-width: 342px; }.detail-cover { min-height: 390px; }.content-section { min-width: 0; padding: 90px 24px; }.content-section h2 { font-size: 44px; max-width: 342px; overflow-wrap: anywhere; }.intro-copy, .highlight-list, .architecture-map { margin-top: 50px; max-width: 342px; min-width: 0; }.highlight-item { gap: 16px; grid-template-columns: 30px minmax(0, 1fr); }.highlight-item p, .intro-copy p { overflow-wrap: anywhere; }.architecture-row { grid-template-columns: 28px minmax(0, 1fr); }.architecture-row i { grid-column: 2; }.detail-cta { padding: 100px 24px; }.detail-cta h2 { font-size: 58px; max-width: 342px; overflow-wrap: anywhere; }.detail-footer { align-items: flex-start; flex-direction: column; gap: 12px; } }
-</style>

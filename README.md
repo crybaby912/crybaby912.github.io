@@ -31,18 +31,39 @@ npm run preview
 ```text
 src/
 ├─ data/projects.ts              项目数据，新增项目从这里开始
+├─ styles/site.css               首页与详情页共享视觉系统
 └─ pages/
    ├─ index.astro                作品集首页
    ├─ 404.astro                  GitHub Pages 自定义 404
    └─ projects/[slug].astro      项目详情页模板
 public/
-└─ food-hero.jpg                 项目视觉素材
+├─ food-hero.jpg                 食汇外卖项目视觉素材
+└─ ai-agent-workflow-demo.gif    AI 工作流真实 UI 演示
 .github/workflows/deploy.yml     GitHub Pages 自动部署
 ```
 
 ## 新增项目
 
-在 `src/data/projects.ts` 的 `projects` 数组中添加一个项目对象，填写 `slug`、项目描述、技术栈、亮点和架构信息。详情页会根据 `slug` 自动生成，首页也会把第一项之外的项目加入更多项目列表，例如：
+在 `src/data/projects.ts` 的 `projects` 数组中添加一个完整项目对象。详情页和首页都会自动生成，不需要再复制页面模板。
+
+建议按下面的分组填写内容：
+
+- **定位**：`title`、`category`、`year`、`status`、`description`、`summary`
+- **技术与结果**：`tech`、`role`、`platforms`、`metrics`
+- **实现路径**：`problem`、`workflow`、`architecture`
+- **工程复盘**：`decisions`、`incidents`
+- **交付证据**：`evidence`、`nextSteps`、`github`
+
+其中 `incidents` 不要只写“修复了一个样式问题”，优先记录会改变设计的故障：现象、根因、修复和最终留下的工程判断。`metrics` 要注明测试环境和口径，避免把本地单机数据写成生产容量承诺。
+
+详情页会固定按以下顺序展示这些字段：
+
+```text
+项目概览 → 量化结果 → 问题约束 → 实现流程 → 系统架构
+→ 关键决策 → Bug 复盘 → 验证证据 → 下一步
+```
+
+项目图片放入 `public/`，并在数据中的 `cover` 使用以 `/` 开头的路径。展示截图或 GIF 时使用 `coverFit: 'contain'` 保证完整显示；需要铺满图片区域时使用 `coverFit: 'cover'`。
 
 ```text
 /projects/your-project-slug/
