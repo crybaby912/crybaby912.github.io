@@ -52,12 +52,12 @@ const socialImage = new URL(project.cover, Astro.site);
         </section>
 
         <section class="content-section intro-section">
-          <div><p class="section-kicker">01 / OVERVIEW</p><h2>从一顿饭开始，<br /><span>把业务链路跑通。</span></h2></div>
+          <div><p class="section-kicker">01 / OVERVIEW</p><h2>{project.introHeading}<br /><span>{project.introAccent}</span></h2></div>
           <div class="intro-copy"><p>{project.description}</p><a class="source-link" href={project.github} target="_blank" rel="noreferrer">查看 GitHub 源码 <span>↗</span></a></div>
         </section>
 
         <section id="key-decisions" class="content-section highlight-section">
-          <div class="section-title"><p class="section-kicker">02 / KEY DECISIONS</p><h2>我重点解决了<br /><span>这些问题。</span></h2></div>
+          <div class="section-title"><p class="section-kicker">02 / KEY DECISIONS</p><h2>{project.highlightHeading}<br /><span>{project.highlightAccent}</span></h2></div>
           <div class="highlight-list">
             {project.highlights.map((item, index) => (
               <article class="highlight-item">
@@ -69,13 +69,13 @@ const socialImage = new URL(project.cover, Astro.site);
         </section>
 
         <section class="content-section architecture-section">
-          <div class="section-title"><p class="section-kicker">03 / SYSTEM MAP</p><h2>一条业务链，<br /><span>多个可靠边界。</span></h2></div>
+          <div class="section-title"><p class="section-kicker">03 / SYSTEM MAP</p><h2>{project.architectureHeading}<br /><span>{project.architectureAccent}</span></h2></div>
           <div class="architecture-map">
             {project.architecture.map((layer, index) => <div class="architecture-row"><span>0{index + 1}</span><b>{layer}</b><i>{index === 0 ? '体验入口' : index === project.architecture.length - 1 ? '智能增强' : '业务基础'}</i></div>)}
           </div>
         </section>
 
-        <section class="detail-cta"><p class="section-kicker">NEXT ITERATION</p><h2>还有问题，<br /><em>继续把它做深。</em></h2><a class="cta-link" href="/">回到全部项目 <span>↗</span></a></section>
+        <section class="detail-cta"><p class="section-kicker">NEXT ITERATION</p><h2>{project.ctaHeading}<br /><em>{project.ctaAccent}</em></h2><a class="cta-link" href="/">回到全部项目 <span>↗</span></a></section>
       </main>
 
       <footer class="detail-footer"><span>© 2026 CRYBABY912</span><a href="/">作品集首页 ↑</a></footer>
