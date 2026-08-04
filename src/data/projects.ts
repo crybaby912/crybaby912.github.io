@@ -39,6 +39,14 @@ export type ProjectEvidence = {
   detail: string;
 };
 
+export type ProjectScreenshot = {
+  src: string;
+  title: string;
+  caption: string;
+  group: 'user' | 'admin';
+  kind: 'mobile' | 'desktop';
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -51,6 +59,7 @@ export type Project = {
   tech: string[];
   cover: string;
   coverFit: 'contain' | 'cover';
+  screenshots?: ProjectScreenshot[];
   github: string;
   role: string;
   platforms: string[];
@@ -72,15 +81,33 @@ export const projects: Project[] = [
   {
     slug: 'food-take-out',
     title: '食汇外卖',
-    category: 'COMMERCE SYSTEMS',
-    eyebrow: 'FULL-STACK SYSTEM',
+    category: '业务系统',
+    eyebrow: '全栈业务系统',
     year: '2026',
-    status: 'SHIPPED / ITERATING',
+    status: '已上线 / 持续迭代',
     description: '面向校园餐饮场景的全栈外卖系统，覆盖点餐、订单、配送、商家经营和 AI 客服。',
     summary: '这不是一个只展示菜品的页面，而是一条从用户点餐延伸到商家经营的完整业务链。订单状态、库存、优惠、配送和 AI 都必须在同一个业务事实下工作。',
     tech: ['Spring Boot', 'Vue / uni-app', 'MySQL', 'Redis', 'Spring AI', 'WebSocket'],
-    cover: '/food-hero.jpg',
-    coverFit: 'cover',
+    cover: '/projects/food-take-out/food-dashboard.png',
+    coverFit: 'contain',
+    screenshots: [
+      { src: '/projects/food-take-out/food-dashboard.png', title: '\u5546\u5bb6\u5de5\u4f5c\u53f0', caption: '\u8ba2\u5355\u3001\u7ecf\u8425\u6570\u636e\u4e0e\u83dc\u54c1\u72b6\u6001\u96c6\u4e2d\u5728\u540c\u4e00\u4e2a\u5de5\u4f5c\u53f0\u3002', group: 'admin', kind: 'desktop' },
+      { src: '/projects/food-take-out/food-order-mobile.png', title: '\u70b9\u9910\u9996\u9875', caption: '\u5148\u786e\u8ba4\u5e97\u94fa\u3001\u914d\u9001\u4fe1\u606f\u548c\u4f18\u60e0\uff0c\u518d\u8fdb\u5165\u70b9\u9910\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-menu-mobile.png', title: '\u70ed\u95e8\u83dc\u54c1', caption: '\u63a8\u8350\u83dc\u3001\u70ed\u95e8\u83dc\u548c\u8bc4\u4ef7\u6cbf\u7740\u540c\u4e00\u6761\u6d4f\u89c8\u8def\u5f84\u5c55\u5f00\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-flash-sale-mobile.png', title: '\u9650\u65f6\u79d2\u6740', caption: '\u4ef7\u683c\u3001\u5e93\u5b58\u548c\u4e0b\u5355\u52a8\u4f5c\u5171\u540c\u66b4\u9732\u9ad8\u5e76\u53d1\u94fe\u8def\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-coupons-mobile.png', title: '\u4f18\u60e0\u5238\u4e2d\u5fc3', caption: '\u53ef\u9886\u53d6\u4e0e\u5df2\u9886\u53d6\u72b6\u6001\u6e05\u6670\u5206\u5f00\uff0c\u907f\u514d\u91cd\u590d\u4f7f\u7528\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-address-mobile.png', title: '\u6536\u8d27\u5730\u5740', caption: '\u8054\u7cfb\u4eba\u3001\u5730\u5740\u3001\u914d\u9001\u5b9a\u4f4d\u548c\u6807\u7b7e\u96c6\u4e2d\u5728\u4e00\u6761\u8868\u5355\u6d41\u7a0b\u4e2d\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-location-mobile.png', title: '\u5730\u56fe\u9009\u70b9', caption: '\u641c\u7d22\u3001\u5730\u56fe\u5b9a\u4f4d\u548c\u9644\u8fd1\u5730\u70b9\u786e\u8ba4\u5f62\u6210\u8fde\u7eed\u64cd\u4f5c\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-reviews-mobile.png', title: '\u5168\u7ad9\u8bc4\u4ef7', caption: '\u8bc4\u5206\u5206\u5e03\u4e0e\u83dc\u54c1\u53cd\u9988\u5171\u540c\u7ec4\u6210\u5b8c\u6574\u7684\u8bc4\u4ef7\u9875\u9762\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-product-review-mobile.png', title: '\u5546\u54c1\u8bc4\u4ef7', caption: '\u661f\u7ea7\u3001\u6587\u5b57\u8bc4\u4ef7\u548c AI \u8f85\u52a9\u6c47\u805a\u5230\u63d0\u4ea4\u524d\u4e00\u6b65\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-messages-mobile.png', title: '\u6d88\u606f\u4e2d\u5fc3', caption: '\u4eba\u5de5\u5ba2\u670d\u3001AI \u5ba2\u670d\u4e0e\u7cfb\u7edf\u901a\u77e5\u5206\u522b\u62e5\u6709\u6e05\u6670\u5165\u53e3\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-service-mobile.png', title: '\u4eba\u5de5\u5ba2\u670d', caption: '\u4f1a\u8bdd\u9875\u540c\u65f6\u4fdd\u7559\u8425\u4e1a\u65f6\u95f4\u3001\u8ba2\u5355\u72b6\u6001\u548c\u56de\u590d\u53cd\u9988\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-ai-mobile.png', title: 'AI \u667a\u80fd\u5ba2\u670d', caption: '\u53d7\u63a7\u52a8\u4f5c\u628a\u63a8\u8350\u4e0e\u8bc4\u4ef7\u8fde\u63a5\u5230\u771f\u5b9e\u4e1a\u52a1\u6570\u636e\u3002', group: 'user', kind: 'mobile' },
+      { src: '/projects/food-take-out/food-flash-sale-admin.png', title: '\u79d2\u6740\u6d3b\u52a8\u7ba1\u7406', caption: '\u5546\u5bb6\u7aef\u96c6\u4e2d\u63a7\u5236\u5546\u54c1\u3001\u5e93\u5b58\u548c\u6d3b\u52a8\u65f6\u95f4\u3002', group: 'admin', kind: 'desktop' },
+      { src: '/projects/food-take-out/food-coupons-admin.png', title: '\u4f18\u60e0\u5238\u7ba1\u7406', caption: '\u53d1\u884c\u91cf\u3001\u53ef\u9886\u53d6\u5e93\u5b58\u3001\u6709\u6548\u671f\u548c\u53d1\u5e03\u72b6\u6001\u653e\u5728\u4e00\u8d77\u3002', group: 'admin', kind: 'desktop' },
+      { src: '/projects/food-take-out/food-reviews-admin.png', title: '\u8bc4\u4ef7\u7ba1\u7406', caption: '\u5546\u5bb6\u6309\u72b6\u6001\u7b5b\u9009\u8bc4\u4ef7\uff0c\u5e76\u53ef\u7528 AI \u8f85\u52a9\u6574\u7406\u56de\u590d\u3002', group: 'admin', kind: 'desktop' },
+      { src: '/projects/food-take-out/food-service-admin.png', title: '\u4eba\u5de5\u5ba2\u670d\u5de5\u4f5c\u53f0', caption: '\u4f1a\u8bdd\u5217\u8868\u3001\u8ba2\u5355\u4e0a\u4e0b\u6587\u548c\u56de\u590d\u52a8\u4f5c\u5728\u540c\u4e00\u4e2a\u5de5\u4f5c\u53f0\u5b8c\u6210\u3002', group: 'admin', kind: 'desktop' },
+    ],
     github: 'https://github.com/crybaby912/food-take-out',
     role: '独立设计与全栈开发',
     platforms: ['微信小程序用户端', 'Vue 商家管理端', 'Spring Boot 服务端', 'AI 智能客服'],
@@ -106,10 +133,10 @@ export const projects: Project[] = [
       { step: '04', title: '让 AI 只做擅长的事', body: '客服读取真实菜单、订单、营业状态和 FAQ；加购、评价和转人工使用受控动作协议，外部模型不可用时走本地 FAQ、推荐和业务兜底。', artifact: 'SSE / RAG / 本地 fallback' },
     ],
     architecture: [
-      { layer: '01 / EXPERIENCE', title: '用户与商家界面', body: '小程序承载点餐、订单和 AI 对话，Vue 管理端承载菜品、库存、优惠、评价和经营报表。', tags: ['uni-app', 'Vue 2', 'Element UI'] },
-      { layer: '02 / BUSINESS API', title: '统一业务入口', body: 'Spring Boot 按用户归属和当前状态校验请求，支付、取消、评价和优惠券核销都在服务层重新确认。', tags: ['Spring Boot', 'JWT', 'MyBatis'] },
-      { layer: '03 / CONSISTENCY', title: '库存与订单事实', body: 'MySQL 保存订单快照和状态，Redis 提供限流、缓存与秒杀窗口；限流失效时也不改变库存正确性。', tags: ['MySQL 8', 'Redis DB10', 'Lua'] },
-      { layer: '04 / INTELLIGENCE', title: '可控的 AI 边界', body: 'Spring AI 接入 DeepSeek 与 Embedding，SSE 输出自然语言；动作协议和本地降级让 AI 不越权、不阻断基础业务。', tags: ['Spring AI', 'DeepSeek', 'SSE'] },
+      { layer: '01 / 用户体验', title: '用户与商家界面', body: '小程序承载点餐、订单和 AI 对话，Vue 管理端承载菜品、库存、优惠、评价和经营报表。', tags: ['uni-app', 'Vue 2', 'Element UI'] },
+      { layer: '02 / 业务接口', title: '统一业务入口', body: 'Spring Boot 按用户归属和当前状态校验请求，支付、取消、评价和优惠券核销都在服务层重新确认。', tags: ['Spring Boot', 'JWT', 'MyBatis'] },
+      { layer: '03 / 数据一致性', title: '库存与订单事实', body: 'MySQL 保存订单快照和状态，Redis 提供限流、缓存与秒杀窗口；限流失效时也不改变库存正确性。', tags: ['MySQL 8', 'Redis DB10', 'Lua'] },
+      { layer: '04 / 智能能力', title: '可控的 AI 边界', body: 'Spring AI 接入 DeepSeek 与 Embedding，SSE 输出自然语言；动作协议和本地降级让 AI 不越权、不阻断基础业务。', tags: ['Spring AI', 'DeepSeek', 'SSE'] },
     ],
     decisions: [
       { title: '限流不承担库存正确性', problem: '把“请求少一点”当成“库存不会超卖”，多实例或网络抖动时仍然会失效。', decision: 'Redis Lua 只做共享限流，数据库用原子扣减、活动约束和唯一索引做最终裁决。', result: '秒杀验收 5,272 次请求全部通过，库存边界不会被单一中间件绑架。' },
@@ -133,10 +160,10 @@ export const projects: Project[] = [
   {
     slug: 'ai-agent-workflow',
     title: 'AI Agent Workflow',
-    category: 'AI SYSTEMS',
-    eyebrow: 'WORKFLOW ORCHESTRATION',
+    category: 'AI 系统',
+    eyebrow: '工作流编排',
     year: '2026',
-    status: 'DEMO READY / IN BUILD',
+    status: '演示可用 / 持续开发',
     description: '把一次性的画布调用，变成可恢复、可观测的 AI 执行系统。',
     summary: 'AI Agent Workflow 是一个可视化工作流编排平台：用户在 React Flow 画布上定义 DAG，后端把它持久化为任务，Worker 执行节点并通过 SSE 回传过程。重点不是“能调用模型”，而是失败后还能解释、恢复和验证。',
     tech: ['Spring Boot', 'Spring AI', 'React Flow', 'PostgreSQL', 'Redis', 'Prometheus'],
@@ -167,10 +194,10 @@ export const projects: Project[] = [
       { step: '04', title: '结果要能被验证', body: 'SSE 推送实时事件，Last-Event-ID 支持回放；Prometheus 记录队列、节点、Provider、Token 和成本，k6 与 CI 给出交付证据。', artifact: 'SSE / Prometheus / k6 / CI' },
     ],
     architecture: [
-      { layer: '01 / CANVAS', title: '工作流编排体验', body: '节点面板、画布、配置检视器和运行抽屉共享同一份注册表，新增节点不需要改多处分支。', tags: ['React 18', 'Vite', 'React Flow'] },
-      { layer: '02 / EXECUTION', title: '持久化任务运行时', body: '任务从 PENDING 到 RUNNING，再进入 SUCCESS、FAILED 或 CANCELLED；节点日志、事件和 Trace ID 保持同一条执行链。', tags: ['Spring Boot', 'DAG', 'SSE'] },
-      { layer: '03 / DATA', title: '可恢复的数据边界', body: 'PostgreSQL 保存任务、节点检查点和事件，Flyway 管理迁移；Redis Lua 负责跨实例的并发与配额控制。', tags: ['PostgreSQL', 'Flyway', 'Redis Lua'] },
-      { layer: '04 / PROVIDERS', title: '受控的外部能力', body: 'OpenAI-compatible Provider 链处理重试与故障转移，AES-256-GCM 加密项目密钥，Base URL 由部署白名单约束。', tags: ['Spring AI', 'AES-256-GCM', 'Allowlist'] },
+      { layer: '01 / 画布体验', title: '工作流编排体验', body: '节点面板、画布、配置检视器和运行抽屉共享同一份注册表，新增节点不需要改多处分支。', tags: ['React 18', 'Vite', 'React Flow'] },
+      { layer: '02 / 执行运行时', title: '持久化任务运行时', body: '任务从 PENDING 到 RUNNING，再进入 SUCCESS、FAILED 或 CANCELLED；节点日志、事件和 Trace ID 保持同一条执行链。', tags: ['Spring Boot', 'DAG', 'SSE'] },
+      { layer: '03 / 数据边界', title: '可恢复的数据边界', body: 'PostgreSQL 保存任务、节点检查点和事件，Flyway 管理迁移；Redis Lua 负责跨实例的并发与配额控制。', tags: ['PostgreSQL', 'Flyway', 'Redis Lua'] },
+      { layer: '04 / 外部能力', title: '受控的外部能力', body: 'OpenAI-compatible Provider 链处理重试与故障转移，AES-256-GCM 加密项目密钥，Base URL 由部署白名单约束。', tags: ['Spring AI', 'AES-256-GCM', 'Allowlist'] },
     ],
     decisions: [
       { title: '把“执行中”变成可恢复任务', problem: '仅依赖内存线程时，进程重启、客户端断开或节点失败都会让用户无法知道任务到底发生了什么。', decision: '先持久化任务和节点检查点，再由 Worker 认领；重试复用成功节点，事件按 ID 回放。', result: '任务可以查询、取消、恢复和重跑，运行状态不再藏在单个进程里。' },

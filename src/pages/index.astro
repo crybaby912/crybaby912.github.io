@@ -5,6 +5,7 @@ import '../styles/site.css';
 const categories = ['ALL', ...new Set(projects.map((project) => project.category))];
 const totalIncidents = projects.reduce((count, project) => count + project.incidents.length, 0);
 const totalEvidence = projects.reduce((count, project) => count + project.evidence.length, 0);
+const featurePreview = featuredProject.screenshots?.find((shot) => shot.group === 'admin' && shot.kind === 'desktop')?.src ?? featuredProject.cover;
 const pageTitle = 'CRYBABY912 / 全栈与 AI 工程作品集';
 const pageDescription = 'CRYBABY912 的个人项目作品集，记录全栈系统、AI 应用和真实工程问题的解决过程。';
 const canonicalURL = new URL('/', Astro.site);
@@ -22,7 +23,7 @@ const methodSteps = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#f5f2ea" />
+    <meta name="theme-color" content="#f4f5f1" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={pageTitle} />
@@ -35,74 +36,86 @@ const methodSteps = [
     <title>{pageTitle}</title>
   </head>
   <body id="top">
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <a class="skip-link" href="#content">跳到主要内容</a>
     <div class="site-shell">
       <header class="site-header">
         <div class="container">
           <a class="brand" href="#top" aria-label="返回首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
           <nav id="site-nav" class="site-nav" aria-label="主导航">
-            <a href="#work">项目 <span>01</span></a>
-            <a href="#approach">方法 <span>02</span></a>
-            <a href="#about">关于 <span>03</span></a>
+            <a href="#work" data-nav-link>项目 <span>01</span></a>
+            <a href="#approach" data-nav-link>方法 <span>02</span></a>
+            <a href="#about" data-nav-link>关于 <span>03</span></a>
             <a class="nav-contact" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">GitHub ↗</a>
           </nav>
-          <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="site-nav"><span>MENU</span><span class="menu-icon">+</span></button>
+          <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="site-nav"><span>菜单</span><span class="menu-icon" aria-hidden="true">+</span></button>
         </div>
       </header>
 
       <main id="content">
         <section class="home-hero" aria-labelledby="hero-title">
           <div class="container hero-grid">
-            <div>
-              <p class="eyebrow">FULL-STACK / AI / PRODUCT ENGINEERING</p>
+            <div class="hero-intro" data-reveal>
+              <p class="eyebrow">全栈工程 / AI 应用 / 产品实现</p>
+              <p class="hero-index">个人案例集 · 2026</p>
               <h1 id="hero-title" class="hero-title">把复杂业务，<br /><em>做成能被验证的系统。</em></h1>
-              <p class="hero-copy">这里不是功能截图墙，而是我在两个真实项目里如何建模、排错、取舍和交付的记录。每个案例都包含实现路径、关键 Bug 和可以复核的结果。</p>
+              <p class="hero-copy">这里记录我如何建模、排错、取舍和交付，而不是把功能截图简单堆在一起。每个案例都保留实现路径、关键 Bug 和可以复核的结果。</p>
               <div class="hero-actions">
-                <a class="button button-primary" href="#work">查看项目 <span>↓</span></a>
-                <a class="button button-quiet" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">GitHub ↗</a>
+                <a class="button button-primary" href="#work">查看项目 <span aria-hidden="true">↓</span></a>
+                <a class="button button-quiet" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">访问 GitHub <span aria-hidden="true">↗</span></a>
+              </div>
+              <div class="hero-note"><span class="status-dot" aria-hidden="true"></span><span>持续更新：把下一次迭代也写进案例</span></div>
+            </div>
+
+            <div class="hero-visual-shell" data-reveal>
+              <div class="visual-toolbar">
+                <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span>食汇外卖 / 商家工作台</span>
+                <span>运营端 · {featuredProject.year}</span>
+              </div>
+              <figure class="hero-visual">
+                <img src={featurePreview} alt="食汇外卖商家工作台界面" loading="eager" />
+                <span class="media-badge">真实项目界面</span>
+              </figure>
+              <div class="hero-visual-footer">
+                <span>订单、库存、优惠与经营数据</span>
+                <a href="/projects/food-take-out/">查看案例 <span aria-hidden="true">↗</span></a>
               </div>
             </div>
-            <aside class="hero-aside" aria-label="当前精选项目">
-              <div class="hero-aside-head"><p class="section-label">FEATURED CASE</p><span class="hero-aside-year">{featuredProject.year}</span></div>
-              <h2 class="hero-aside-title">{featuredProject.title}</h2>
-              <p class="hero-aside-focus">{featuredProject.description}</p>
-              <p class="hero-aside-copy">{featuredProject.summary}</p>
-              <div class="hero-aside-stats">
-                <div><strong>{projects.length}</strong><span>PROJECTS</span></div>
-                <div><strong>{totalIncidents}</strong><span>BUG NOTES</span></div>
-                <div><strong>{totalEvidence}</strong><span>EVIDENCE</span></div>
-              </div>
-            </aside>
           </div>
         </section>
 
         <section class="signal-bar" aria-label="项目概览">
           <div class="container signal-grid">
-            <div class="signal-item"><span class="signal-value">{projects.length}</span><span class="signal-label">完整项目案例</span></div>
-            <div class="signal-item"><span class="signal-value">DAG + Commerce</span><span class="signal-label">两类系统问题</span></div>
-            <div class="signal-item"><span class="signal-value">CI / k6</span><span class="signal-label">工程验证证据</span></div>
-            <div class="signal-item"><span class="signal-value">持续更新</span><span class="signal-label">把下一次迭代写下来</span></div>
+            <div class="signal-item" data-reveal><span class="signal-value" data-count={projects.length}>{projects.length}</span><span class="signal-label">完整项目案例</span></div>
+            <div class="signal-item" data-reveal><span class="signal-value" data-count={totalIncidents}>{totalIncidents}</span><span class="signal-label">条故障复盘</span></div>
+            <div class="signal-item" data-reveal><span class="signal-value" data-count={totalEvidence}>{totalEvidence}</span><span class="signal-label">组验证证据</span></div>
+            <div class="signal-item" data-reveal><span class="signal-value signal-text">持续更新</span><span class="signal-label">下一次迭代也会留下记录</span></div>
           </div>
         </section>
 
-        <section id="work" class="section work-section">
+        <section id="work" class="section work-section" data-section="work">
           <div class="container">
-            <div class="section-head-row">
+            <div class="section-head-row" data-reveal>
               <div>
-                <p class="section-label">01 / SELECTED WORK</p>
+                <p class="section-label">01 / 项目案例</p>
                 <h2 class="section-title">项目不是结果图，<br /><em>而是一条解决问题的路径。</em></h2>
-                <p class="section-intro">按类别筛选案例。每张卡片都通向一份完整拆解：问题、设计、架构、Bug 复盘和验证结果。</p>
+                <p class="section-intro">按类别筛选案例。每个项目都通向一份完整拆解：问题、设计、架构、Bug 复盘和验证结果。</p>
               </div>
-              <div class="category-switcher" aria-label="项目分类筛选">
-                {categories.map((category, index) => <button class="category-filter" type="button" data-filter={category} aria-pressed={index === 0 ? 'true' : 'false'}>{category === 'ALL' ? '全部' : category}</button>)}
+              <div class="section-head-controls">
+                <div class="category-switcher" aria-label="项目分类筛选">
+                  {categories.map((category, index) => <button class="category-filter" type="button" data-filter={category} aria-pressed={index === 0 ? 'true' : 'false'}>{category === 'ALL' ? '全部' : category}</button>)}
+                </div>
+                <p class="filter-status" data-filter-status aria-live="polite">显示全部 {projects.length} 个项目</p>
               </div>
             </div>
 
             <div class="project-list">
               {projects.map((project, index) => (
-                <article class="project-card" data-category={project.category}>
-                  <a class={`project-media ${project.coverFit === 'contain' ? 'is-contain' : 'is-cover'}`} href={`/projects/${project.slug}/`} aria-label={`查看 ${project.title} 项目详情`}>
-                    <img src={project.cover} alt={`${project.title} 项目预览`} loading={index === 0 ? 'eager' : 'lazy'} />
+                <article class={'project-card ' + (index === 0 ? 'is-featured' : '')} data-category={project.category} data-reveal style={'--delay: ' + index * 100 + 'ms'}>
+                  <a class={'project-media ' + (project.coverFit === 'contain' ? 'is-contain' : 'is-cover')} href={'/projects/' + project.slug + '/'} aria-label={'查看 ' + project.title + ' 案例'}>
+                    <img src={project.cover} alt={project.title + ' 项目预览'} loading={index === 0 ? 'eager' : 'lazy'} />
+                    <span class="project-media-label">查看案例 <span aria-hidden="true">↗</span></span>
                   </a>
                   <div class="project-card-body">
                     <div class="project-card-meta"><span>0{index + 1}</span><span>{project.category}</span><span>{project.year}</span></div>
@@ -110,8 +123,8 @@ const methodSteps = [
                     <p class="project-card-description">{project.description}</p>
                     <div class="tag-list">{project.tech.map((skill) => <span class="tag">{skill}</span>)}</div>
                     <div class="project-card-actions">
-                      <a class="text-link" href={`/projects/${project.slug}/`}>阅读案例 <span>↗</span></a>
-                      <a class="text-link" href={project.github} target="_blank" rel="noreferrer">源代码 <span>↗</span></a>
+                      <a class="text-link" href={'/projects/' + project.slug + '/'}>阅读案例 <span aria-hidden="true">↗</span></a>
+                      <a class="text-link" href={project.github} target="_blank" rel="noreferrer">源代码 <span aria-hidden="true">↗</span></a>
                     </div>
                   </div>
                 </article>
@@ -120,63 +133,161 @@ const methodSteps = [
           </div>
         </section>
 
-        <section id="approach" class="section practice-section">
+        <section id="approach" class="section practice-section" data-section="approach">
           <div class="container practice-grid">
-            <div>
-              <p class="section-label">02 / HOW I WORK</p>
+            <div data-reveal>
+              <p class="section-label">02 / 工作方法</p>
               <h2 class="section-title">先理解问题，<br /><em>再决定技术。</em></h2>
               <p class="practice-copy">我更关心系统在失败、并发、重启和外部依赖不可用时会怎样。技术选型要服务于边界、反馈和长期维护，而不是单独成为项目卖点。</p>
             </div>
             <div class="practice-steps">
-              {methodSteps.map((method, index) => <article class="practice-step"><span class="practice-step-number">0{index + 1}</span><div><h3>{method.title}</h3><p>{method.body}</p></div></article>)}
+              {methodSteps.map((method, index) => <article class="practice-step" data-reveal style={'--delay: ' + index * 100 + 'ms'}><span class="practice-step-number">0{index + 1}</span><div><h3>{method.title}</h3><p>{method.body}</p></div></article>)}
             </div>
           </div>
         </section>
 
-        <section id="about" class="section about-section">
+        <section id="about" class="section about-section" data-section="about">
           <div class="container about-grid">
-            <div>
-              <p class="section-label">03 / ABOUT</p>
+            <div data-reveal>
+              <p class="section-label">03 / 关于我</p>
               <h2 class="section-title">把每个项目，<br /><em>做成可继续讨论的作品。</em></h2>
             </div>
-            <div class="about-copy">
+            <div class="about-copy" data-reveal>
               <p>你好，我是 CRYBABY912，关注全栈工程、AI 应用和产品体验。这个页面记录的不只是“做过什么”，还包括为什么这样做、哪里出过问题，以及我用什么证据判断它已经足够好。</p>
               <div class="about-list">
-                <div class="about-list-row"><span>Focus</span><strong>业务建模 / AI 工程 / 可靠性</strong></div>
-                <div class="about-list-row"><span>Current</span><strong>把可视化 AI 工作流继续做成团队能力</strong></div>
-                <div class="about-list-row"><span>Open source</span><strong>代码、测试和问题记录都在 GitHub</strong></div>
+                <div class="about-list-row"><span>关注方向</span><strong>业务建模 / AI 工程 / 可靠性</strong></div>
+                <div class="about-list-row"><span>正在推进</span><strong>把可视化 AI 工作流继续做成团队能力</strong></div>
+                <div class="about-list-row"><span>开源记录</span><strong>代码、测试和问题记录都在 GitHub</strong></div>
               </div>
-              <a class="text-link" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">访问 GitHub <span>↗</span></a>
+              <a class="text-link" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">访问 GitHub <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </section>
       </main>
 
-      <footer class="site-footer"><span>© 2026 CRYBABY912</span><span>BUILT WITH ASTRO / DOCUMENTED WITH EVIDENCE</span><a href="#top">回到顶部 ↑</a></footer>
+      <footer class="site-footer"><span>© 2026 CRYBABY912</span><span>使用 Astro 构建 · 用证据记录工程过程</span><a href="#top">回到顶部 ↑</a></footer>
     </div>
   </body>
 </html>
 
 <script>
+  document.documentElement.classList.add('js');
+
+  const header = document.querySelector('.site-header');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const setMenu = (open) => {
+    header?.classList.toggle('nav-open', open);
+    menuToggle?.classList.toggle('is-open', open);
+    menuToggle?.setAttribute('aria-expanded', String(open));
+    menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+  };
+
+  menuToggle?.addEventListener('click', () => setMenu(!header?.classList.contains('nav-open')));
+  document.querySelectorAll('.site-nav a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenu(false);
+  });
+  document.addEventListener('click', (event) => {
+    if (header && !header.contains(event.target)) setMenu(false);
+  });
+
   const filters = [...document.querySelectorAll('[data-filter]')];
   const cards = [...document.querySelectorAll('[data-category]')];
+  const filterStatus = document.querySelector('[data-filter-status]');
+  const applyFilter = (card, matches) => {
+    window.clearTimeout(card.filterTimer);
+    if (matches) {
+      card.hidden = false;
+      window.requestAnimationFrame(() => card.classList.remove('is-filtering'));
+    } else {
+      card.classList.add('is-filtering');
+      card.filterTimer = window.setTimeout(() => {
+        card.hidden = true;
+        card.classList.remove('is-filtering');
+      }, 240);
+    }
+  };
 
   filters.forEach((filter) => {
     filter.addEventListener('click', () => {
       const category = filter.getAttribute('data-filter');
+      const visible = cards.filter((card) => category === 'ALL' || card.getAttribute('data-category') === category).length;
       filters.forEach((item) => item.setAttribute('aria-pressed', String(item === filter)));
-      cards.forEach((card) => {
-        const matches = category === 'ALL' || card.getAttribute('data-category') === category;
-        card.toggleAttribute('hidden', !matches);
-      });
+      cards.forEach((card) => applyFilter(card, category === 'ALL' || card.getAttribute('data-category') === category));
+      if (filterStatus) filterStatus.textContent = category === 'ALL' ? '显示全部 ' + visible + ' 个项目' : category + ' · ' + visible + ' 个项目';
     });
   });
 
-  const header = document.querySelector('.site-header');
-  const menuToggle = document.querySelector('.menu-toggle');
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = header?.classList.toggle('nav-open') ?? false;
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-    menuToggle.setAttribute('aria-label', isOpen ? '关闭导航' : '打开导航');
-  });
+  const progress = document.querySelector('.scroll-progress span');
+  let scrollFrame = 0;
+  const updateScrollState = () => {
+    scrollFrame = 0;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress?.style.setProperty('transform', 'scaleX(' + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ')');
+    header?.classList.toggle('is-scrolled', window.scrollY > 12);
+  };
+  window.addEventListener('scroll', () => {
+    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollState);
+  }, { passive: true });
+  updateScrollState();
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealTargets = [...document.querySelectorAll('[data-reveal]')];
+  const show = (item) => item.classList.add('is-visible');
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach(show);
+  } else {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          show(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -36px' });
+    revealTargets.forEach((item) => revealObserver.observe(item));
+  }
+
+  const countTargets = [...document.querySelectorAll('[data-count]')];
+  const animateCount = (element) => {
+    if (element.dataset.counted) return;
+    element.dataset.counted = 'true';
+    const target = Number(element.getAttribute('data-count'));
+    if (reducedMotion || !Number.isFinite(target)) {
+      element.textContent = String(target);
+      return;
+    }
+    const startedAt = performance.now();
+    const tick = (now) => {
+      const progressValue = Math.min((now - startedAt) / 720, 1);
+      element.textContent = String(Math.round(target * (1 - Math.pow(1 - progressValue, 3))));
+      if (progressValue < 1) window.requestAnimationFrame(tick);
+    };
+    element.textContent = '0';
+    window.requestAnimationFrame(tick);
+  };
+  if (reducedMotion || !('IntersectionObserver' in window)) countTargets.forEach(animateCount);
+  else {
+    const countObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.8 });
+    countTargets.forEach((item) => countObserver.observe(item));
+  }
+
+  const navLinks = [...document.querySelectorAll('[data-nav-link]')];
+  const sections = [...document.querySelectorAll('[data-section]')];
+  if ('IntersectionObserver' in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === '#' + entry.target.getAttribute('data-section')));
+      });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach((section) => sectionObserver.observe(section));
+  }
 </script>

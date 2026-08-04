@@ -10,9 +10,10 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const pageTitle = `${project.title} / CRYBABY912`;
-const pageDescription = `${project.title} 项目案例：${project.description}`;
-const canonicalURL = new URL(`/projects/${project.slug}/`, Astro.site);
+const screenshots = project.screenshots ?? [];
+const pageTitle = project.title + ' / CRYBABY912';
+const pageDescription = project.title + ' 项目案例：' + project.description;
+const canonicalURL = new URL('/projects/' + project.slug + '/', Astro.site);
 const socialImage = new URL(project.cover, Astro.site);
 ---
 
@@ -21,7 +22,7 @@ const socialImage = new URL(project.cover, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#f5f2ea" />
+    <meta name="theme-color" content="#f4f5f1" />
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={pageTitle} />
@@ -34,6 +35,7 @@ const socialImage = new URL(project.cover, Astro.site);
     <title>{pageTitle}</title>
   </head>
   <body id="top">
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <a class="skip-link" href="#content">跳到主要内容</a>
     <div class="site-shell detail-shell">
       <header class="detail-top">
@@ -46,7 +48,7 @@ const socialImage = new URL(project.cover, Astro.site);
       <main id="content">
         <section class="detail-hero">
           <div class="container detail-hero-grid">
-            <div>
+            <div class="detail-hero-copy" data-detail-reveal>
               <p class="eyebrow">{project.category} / {project.year}</p>
               <h1 class="detail-title">{project.title}</h1>
               <p class="detail-lead">{project.summary}</p>
@@ -55,41 +57,44 @@ const socialImage = new URL(project.cover, Astro.site);
                 <div><dt>我的角色</dt><dd>{project.role}</dd></div>
                 <div><dt>运行端</dt><dd>{project.platforms.length} 个端 / 服务</dd></div>
               </dl>
-              <div class="hero-actions"><a class="button button-primary" href={project.github} target="_blank" rel="noreferrer">查看源代码 <span>↗</span></a><a class="button button-quiet" href="#incidents">直接看 Bug 复盘 <span>↓</span></a></div>
+              <div class="hero-actions">
+                <a class="button button-primary" href={project.github} target="_blank" rel="noreferrer">查看源代码 <span aria-hidden="true">↗</span></a>
+                <a class="button button-quiet" href="#incidents">直接看 Bug 复盘 <span aria-hidden="true">↓</span></a>
+              </div>
             </div>
-            <figure class={`detail-media ${project.coverFit === 'contain' ? 'is-contain' : 'is-cover'}`}>
-              <span class="media-caption">VISUAL / PROJECT PREVIEW</span>
-              <img src={project.cover} alt={`${project.title} 项目演示`} loading="eager" />
+            <figure class={'detail-media ' + (project.coverFit === 'contain' ? 'is-contain' : 'is-cover')} data-detail-reveal>
+              <span class="media-caption">{project.title} / 项目界面预览</span>
+              <img src={project.cover} alt={project.title + ' 项目演示'} loading="eager" />
             </figure>
           </div>
         </section>
 
         <section class="detail-metrics" aria-label="项目结果">
           <div class="container metric-grid">
-            {project.metrics.map((metric) => <div class="metric-card"><span class="metric-value">{metric.value}</span><span class="metric-label">{metric.label}</span><span class="metric-note">{metric.note}</span></div>)}
+            {project.metrics.map((metric) => <div class="metric-card" data-detail-reveal><span class="metric-value">{metric.value}</span><span class="metric-label">{metric.label}</span><span class="metric-note">{metric.note}</span></div>)}
           </div>
         </section>
 
         <section class="detail-section">
           <div class="container section-split">
-            <div><p class="section-label">01 / THE PROBLEM</p><h2 class="section-title">{project.problem.title}</h2></div>
-            <div><p class="problem-body">{project.problem.body}</p><ul class="constraint-list">{project.problem.constraints.map((constraint) => <li>{constraint}</li>)}</ul></div>
+            <div data-detail-reveal><p class="section-label">01 / 问题定义</p><h2 class="section-title">{project.problem.title}</h2></div>
+            <div data-detail-reveal><p class="problem-body">{project.problem.body}</p><ul class="constraint-list">{project.problem.constraints.map((constraint) => <li>{constraint}</li>)}</ul></div>
           </div>
         </section>
 
         <section class="detail-section alt">
           <div class="container section-split">
-            <div><p class="section-label">02 / BUILD PATH</p><h2 class="section-title">功能如何落到<br /><em>可运行的系统里。</em></h2></div>
+            <div data-detail-reveal><p class="section-label">02 / 实现路径</p><h2 class="section-title">功能如何落到<br /><em>可运行的系统里。</em></h2></div>
             <div class="workflow-grid">
-              {project.workflow.map((step) => <article class="workflow-card"><span class="workflow-step">{step.step}</span><h3>{step.title}</h3><p>{step.body}</p><div class="workflow-artifact">{step.artifact}</div></article>)}
+              {project.workflow.map((step) => <article class="workflow-card" data-detail-reveal><span class="workflow-step">{step.step}</span><h3>{step.title}</h3><p>{step.body}</p><div class="workflow-artifact">{step.artifact}</div></article>)}
             </div>
           </div>
         </section>
 
         <section class="detail-section">
           <div class="container section-split">
-            <div><p class="section-label">03 / SYSTEM MAP</p><h2 class="section-title">每一层都有<br /><em>自己的边界。</em></h2></div>
-            <div class="architecture-list">
+            <div data-detail-reveal><p class="section-label">03 / 系统分层</p><h2 class="section-title">每一层都有<br /><em>自己的边界。</em></h2></div>
+            <div class="architecture-list" data-detail-reveal>
               {project.architecture.map((layer) => <article class="architecture-row"><div class="architecture-layer">{layer.layer}</div><div><h3>{layer.title}</h3><p>{layer.body}</p></div><div class="architecture-tags">{layer.tags.map((tag) => <span>{tag}</span>)}</div></article>)}
             </div>
           </div>
@@ -97,8 +102,8 @@ const socialImage = new URL(project.cover, Astro.site);
 
         <section class="detail-section alt">
           <div class="container section-split">
-            <div><p class="section-label">04 / KEY DECISIONS</p><h2 class="section-title">不是堆技术，<br /><em>而是明确取舍。</em></h2></div>
-            <div class="decision-list">
+            <div data-detail-reveal><p class="section-label">04 / 关键取舍</p><h2 class="section-title">不是堆技术，<br /><em>而是明确取舍。</em></h2></div>
+            <div class="decision-list" data-detail-reveal>
               {project.decisions.map((decision) => <article class="decision-card"><h3>{decision.title}</h3><dl class="decision-field"><dt>问题</dt><dd>{decision.problem}</dd></dl><dl class="decision-field"><dt>决定</dt><dd>{decision.decision}</dd></dl><dl class="decision-field"><dt>结果</dt><dd>{decision.result}</dd></dl></article>)}
             </div>
           </div>
@@ -106,35 +111,199 @@ const socialImage = new URL(project.cover, Astro.site);
 
         <section id="incidents" class="detail-section incident-section">
           <div class="container">
-            <p class="section-label">05 / INCIDENT NOTES</p>
-            <h2 class="section-title">真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
-            <p class="section-copy">下面挑选的是会改变系统设计的故障，而不是纯粹的文案或样式调整。每条记录都保留现象、根因、修复和最终留下的工程判断。</p>
+            <p class="section-label" data-detail-reveal>05 / 故障复盘</p>
+            <h2 class="section-title" data-detail-reveal>真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
+            <p class="section-copy" data-detail-reveal>下面挑选的是会改变系统设计的故障，而不是纯粹的文案或样式调整。每条记录都保留现象、根因、修复和最终留下的工程判断。</p>
             <div class="incident-grid">
-              {project.incidents.map((incident, index) => <article class="incident-card"><span class="incident-number">BUG 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
+              {project.incidents.map((incident, index) => <article class="incident-card" data-detail-reveal><span class="incident-number">复盘 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
             </div>
           </div>
         </section>
 
         <section class="detail-section evidence-section">
           <div class="container section-split">
-            <div><p class="section-label">06 / EVIDENCE</p><h2 class="section-title">让结果可以被<br /><em>别人复核。</em></h2></div>
-            <div>
+            <div data-detail-reveal><p class="section-label">06 / 验证证据</p><h2 class="section-title">让结果可以被<br /><em>别人复核。</em></h2></div>
+            <div data-detail-reveal>
               <p class="section-copy">数字只在边界清楚时才有意义。这里标注测试环境、验收范围和仍然没有宣称完成的部分。</p>
               <div class="evidence-grid">{project.evidence.map((item) => <article class="evidence-card"><span class="evidence-value">{item.value}</span><strong>{item.label}</strong><p>{item.detail}</p></article>)}</div>
-              <div class="next-list">{project.nextSteps.map((nextStep, index) => <div class="next-item"><span>NEXT 0{index + 1}</span><p>{nextStep}</p></div>)}</div>
+              <div class="next-list">{project.nextSteps.map((nextStep, index) => <div class="next-item"><span>下一步 0{index + 1}</span><p>{nextStep}</p></div>)}</div>
             </div>
           </div>
         </section>
 
+        {screenshots.length ? (
+          <section id="showcase" class="detail-section showcase-section">
+            <div class="container">
+              <div class="showcase-header" data-detail-reveal>
+                <div>
+                  <p class="section-label">07 / 界面展示</p>
+                  <h2 class="section-title">真实界面，<br /><em>让业务链路可见。</em></h2>
+                </div>
+                <div class="showcase-intro">
+                  <p class="section-copy">这里选取用户端、商家端和智能客服的关键界面，按真实使用路径整理。点击任意界面可以查看完整截图。</p>
+                  <div class="showcase-switcher" role="tablist" aria-label="界面筛选">
+                    <button type="button" class="showcase-filter is-active" data-gallery-filter="all" aria-pressed="true">全部</button>
+                    <button type="button" class="showcase-filter" data-gallery-filter="user" aria-pressed="false">用户端</button>
+                    <button type="button" class="showcase-filter" data-gallery-filter="admin" aria-pressed="false">商家端</button>
+                  </div>
+                  <p class="showcase-count" data-gallery-count>共 {screenshots.length} 个界面</p>
+                </div>
+              </div>
+              <div class="showcase-grid">
+                {screenshots.map((shot, index) => (
+                  <button type="button" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile') + (index === 0 ? ' is-feature' : '')} data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
+                    <span class="showcase-item-top"><span>{shot.group === 'user' ? '用户端' : '商家端'}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
+                    <span class="showcase-image"><img src={shot.src} alt={project.title + ' - ' + shot.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" /></span>
+                    <span class="showcase-item-copy"><strong>{shot.title}</strong><small>{shot.caption}</small></span>
+                    <span class="showcase-open" aria-hidden="true">↗</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {screenshots.length ? (
+          <dialog class="lightbox" data-lightbox aria-labelledby="lightbox-title">
+            <div class="lightbox-frame">
+              <div class="lightbox-topline">
+                <p id="lightbox-title">界面详情</p>
+                <button class="lightbox-close" type="button" data-lightbox-close aria-label="关闭预览" title="关闭预览">×</button>
+              </div>
+              <figure class="lightbox-figure">
+                <img data-lightbox-image src="" alt="" />
+                <figcaption data-lightbox-caption></figcaption>
+              </figure>
+              <div class="lightbox-footer">
+                <span data-lightbox-counter>01 / 01</span>
+                <div class="lightbox-actions">
+                  <button class="lightbox-arrow" type="button" data-lightbox-prev aria-label="上一张" title="上一张">←</button>
+                  <button class="lightbox-arrow" type="button" data-lightbox-next aria-label="下一张" title="下一张">→</button>
+                </div>
+              </div>
+            </div>
+          </dialog>
+        ) : null}
+
         <section class="detail-cta">
           <div class="container detail-cta-grid">
-            <div><p class="section-label">SOURCE / NEXT ITERATION</p><h2>看完实现路径，<br /><em>再回到代码里验证。</em></h2></div>
-            <a class="button button-quiet" href={project.github} target="_blank" rel="noreferrer">打开 GitHub <span>↗</span></a>
+            <div data-detail-reveal><p class="section-label">代码 / 下一次迭代</p><h2>看完实现路径，<br /><em>再回到代码里验证。</em></h2></div>
+            <a class="button button-quiet" href={project.github} target="_blank" rel="noreferrer">打开 GitHub <span aria-hidden="true">↗</span></a>
           </div>
         </section>
       </main>
 
-      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><span>{project.title} / CASE STUDY</span><a href="#top">回到顶部 ↑</a></footer>
+      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><span>{project.title} / 项目案例</span><a href="#top">回到顶部 ↑</a></footer>
     </div>
   </body>
 </html>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  const progress = document.querySelector('.scroll-progress span');
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress?.style.setProperty('transform', 'scaleX(' + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ')');
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  const galleryItems = [...document.querySelectorAll('[data-gallery-item]')];
+  const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
+  const galleryCount = document.querySelector('[data-gallery-count]');
+  const lightbox = document.querySelector('[data-lightbox]');
+  const lightboxImage = document.querySelector('[data-lightbox-image]');
+  const lightboxTitle = document.querySelector('#lightbox-title');
+  const lightboxCaption = document.querySelector('[data-lightbox-caption]');
+  const lightboxCounter = document.querySelector('[data-lightbox-counter]');
+  let currentIndex = 0;
+
+  const visibleItems = () => galleryItems.filter((item) => !item.hidden);
+  const renderLightbox = (item) => {
+    if (!item || !lightboxImage) return;
+    currentIndex = Number(item.getAttribute('data-gallery-index'));
+    lightboxImage.src = item.getAttribute('data-gallery-src') || '';
+    lightboxImage.alt = item.getAttribute('data-gallery-title') || '';
+    if (lightboxTitle) lightboxTitle.textContent = item.getAttribute('data-gallery-title') || '界面详情';
+    if (lightboxCaption) lightboxCaption.textContent = item.getAttribute('data-gallery-caption') || '';
+    const visible = visibleItems();
+    const position = Math.max(visible.indexOf(item), 0);
+    if (lightboxCounter) lightboxCounter.textContent = String(position + 1).padStart(2, '0') + ' / ' + String(visible.length).padStart(2, '0');
+  };
+  const openLightbox = (item) => {
+    renderLightbox(item);
+    if (lightbox && !lightbox.open) {
+      if (lightbox.showModal) lightbox.showModal();
+      else lightbox.setAttribute('open', '');
+    }
+  };
+  const closeLightbox = () => {
+    if (lightbox?.open && lightbox.close) lightbox.close();
+    else lightbox?.removeAttribute('open');
+  };
+  const moveLightbox = (step) => {
+    const visible = visibleItems();
+    if (!visible.length) return;
+    const position = Math.max(visible.findIndex((item) => Number(item.getAttribute('data-gallery-index')) === currentIndex), 0);
+    openLightbox(visible[(position + step + visible.length) % visible.length]);
+  };
+
+  galleryItems.forEach((item) => item.addEventListener('click', () => openLightbox(item)));
+  galleryFilters.forEach((filter) => {
+    filter.addEventListener('click', () => {
+      const group = filter.getAttribute('data-gallery-filter');
+      galleryFilters.forEach((button) => {
+        const active = button === filter;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      galleryItems.forEach((item) => {
+        const matches = group === 'all' || item.getAttribute('data-gallery-group') === group;
+        window.clearTimeout(item.filterTimer);
+        if (matches) {
+          item.hidden = false;
+          window.requestAnimationFrame(() => item.classList.remove('is-filtering'));
+        } else {
+          item.classList.add('is-filtering');
+          item.filterTimer = window.setTimeout(() => {
+            item.hidden = true;
+            item.classList.remove('is-filtering');
+          }, 220);
+        }
+      });
+      if (galleryCount) galleryCount.textContent = '显示 ' + visibleItems().filter((item) => group === 'all' || item.getAttribute('data-gallery-group') === group).length + ' 个界面';
+    });
+  });
+  document.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
+  document.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => moveLightbox(-1));
+  document.querySelector('[data-lightbox-next]')?.addEventListener('click', () => moveLightbox(1));
+  lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (!lightbox?.open) return;
+    if (event.key === 'ArrowLeft') moveLightbox(-1);
+    if (event.key === 'ArrowRight') moveLightbox(1);
+  });
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealItems = [...document.querySelectorAll('[data-detail-reveal]')];
+  revealItems.forEach((item, index) => {
+    item.dataset.reveal = 'up';
+    item.style.setProperty('--delay', Math.min(index * 45, 320) + 'ms');
+  });
+  const show = (item) => item.classList.add('is-visible');
+  if (reducedMotion || !('IntersectionObserver' in window)) revealItems.forEach(show);
+  else {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          show(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px' });
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+</script>
