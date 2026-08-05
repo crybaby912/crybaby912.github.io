@@ -59,6 +59,7 @@ export type Project = {
   tech: string[];
   cover: string;
   coverFit: 'contain' | 'cover';
+  cardSignal?: string;
   heroPreview?: string;
   heroPreviewFit?: 'contain' | 'cover';
   screenshots?: ProjectScreenshot[];
@@ -92,6 +93,7 @@ export const projects: Project[] = [
     tech: ['Spring Boot', 'Vue / uni-app', 'MySQL', 'Redis', 'Spring AI', 'WebSocket'],
     cover: '/projects/food-take-out/food-cover-collage.png',
     coverFit: 'cover',
+    cardSignal: '用户端 + 商家端业务链',
     heroPreview: '/projects/food-take-out/food-hero-preview.png',
     heroPreviewFit: 'cover',
     screenshots: [
@@ -173,6 +175,7 @@ export const projects: Project[] = [
     tech: ['Spring Boot', 'Spring AI', 'React Flow', 'PostgreSQL', 'Redis', 'Prometheus'],
     cover: '/ai-agent-workflow-demo.gif',
     coverFit: 'contain',
+    cardSignal: '画布 + 可恢复执行',
     github: 'https://github.com/crybaby912/ai-agent-workflow',
     role: '独立设计与全栈开发',
     platforms: ['React 工作流画布', 'Spring Boot 执行 API', 'PostgreSQL / Redis 数据层', 'FastAPI TTS 微服务', 'Prometheus / Grafana 观测栈'],

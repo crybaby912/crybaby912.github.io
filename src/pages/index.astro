@@ -116,13 +116,16 @@ const methodSteps = [
                 <article class={'project-card ' + (index === 0 ? 'is-featured' : '')} data-category={project.category} data-reveal style={'--delay: ' + index * 100 + 'ms'}>
                   <a class={'project-media ' + (project.coverFit === 'contain' ? 'is-contain' : 'is-cover')} href={'/projects/' + project.slug + '/'} aria-label={'查看 ' + project.title + ' 案例'}>
                     <img src={project.cover} alt={project.title + ' 项目预览'} loading={index === 0 ? 'eager' : 'lazy'} />
+                    <span class="project-media-context">{project.cardSignal}</span>
                     <span class="project-media-label">查看案例 <span aria-hidden="true">↗</span></span>
                   </a>
                   <div class="project-card-body">
                     <div class="project-card-meta"><span>0{index + 1}</span><span>{project.category}</span><span>{project.year}</span></div>
                     <h3 class="project-card-title">{project.title}</h3>
+                    <p class="project-card-role">{project.role}</p>
                     <p class="project-card-description">{project.description}</p>
                     <div class="tag-list">{project.tech.map((skill) => <span class="tag">{skill}</span>)}</div>
+                    <p class="project-card-result"><span>首条证据</span><strong>{project.metrics[0].value}</strong>{project.metrics[0].label}</p>
                     <div class="project-card-actions">
                       <a class="text-link" href={'/projects/' + project.slug + '/'}>阅读案例 <span aria-hidden="true">↗</span></a>
                       <a class="text-link" href={project.github} target="_blank" rel="noreferrer">源代码 <span aria-hidden="true">↗</span></a>
