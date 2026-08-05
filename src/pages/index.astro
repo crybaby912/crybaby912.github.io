@@ -184,12 +184,16 @@ const methodSteps = [
     menuToggle?.classList.toggle('is-open', open);
     menuToggle?.setAttribute('aria-expanded', String(open));
     menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+    if (open) window.requestAnimationFrame(() => document.querySelector('.site-nav a')?.focus());
   };
 
   menuToggle?.addEventListener('click', () => setMenu(!header?.classList.contains('nav-open')));
   document.querySelectorAll('.site-nav a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') setMenu(false);
+    if (event.key === 'Escape' && header?.classList.contains('nav-open')) {
+      setMenu(false);
+      menuToggle?.focus();
+    }
   });
   document.addEventListener('click', (event) => {
     if (header && !header.contains(event.target)) setMenu(false);

@@ -165,7 +165,7 @@ const socialImage = new URL(project.cover, Astro.site);
                 </div>
                 <div class="showcase-intro">
                   <p class="section-copy">这里选取用户端、商家端和智能客服的关键界面，按真实使用路径整理。点击任意界面可以查看完整截图。</p>
-                  <div class="showcase-switcher" role="tablist" aria-label="界面筛选">
+                  <div class="showcase-switcher" role="group" aria-label="界面筛选">
                     <button type="button" class="showcase-filter is-active" data-gallery-filter="all" aria-pressed="true">全部</button>
                     <button type="button" class="showcase-filter" data-gallery-filter="user" aria-pressed="false">用户端</button>
                     <button type="button" class="showcase-filter" data-gallery-filter="admin" aria-pressed="false">商家端</button>
@@ -258,6 +258,8 @@ const socialImage = new URL(project.cover, Astro.site);
   const lightboxTitle = document.querySelector('#lightbox-title');
   const lightboxCaption = document.querySelector('[data-lightbox-caption]');
   const lightboxCounter = document.querySelector('[data-lightbox-counter]');
+  const lightboxClose = document.querySelector('[data-lightbox-close]');
+  let activeTrigger = null;
   let currentIndex = 0;
 
   const visibleItems = () => galleryItems.filter((item) => !item.hidden);
@@ -278,15 +280,25 @@ const socialImage = new URL(project.cover, Astro.site);
     if (lightboxCounter) lightboxCounter.textContent = String(position + 1).padStart(2, '0') + ' / ' + String(visible.length).padStart(2, '0');
   };
   const openLightbox = (item) => {
+    activeTrigger = item;
     renderLightbox(item);
     if (lightbox && !lightbox.open) {
       if (lightbox.showModal) lightbox.showModal();
       else lightbox.setAttribute('open', '');
     }
+    window.requestAnimationFrame(() => lightboxClose?.focus());
+  };
+  const restoreLightboxFocus = () => {
+    const trigger = activeTrigger;
+    activeTrigger = null;
+    trigger?.focus();
   };
   const closeLightbox = () => {
     if (lightbox?.open && lightbox.close) lightbox.close();
-    else lightbox?.removeAttribute('open');
+    else {
+      lightbox?.removeAttribute('open');
+      restoreLightboxFocus();
+    }
   };
   const moveLightbox = (step) => {
     const visible = visibleItems();
@@ -326,11 +338,16 @@ const socialImage = new URL(project.cover, Astro.site);
   document.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
   document.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => moveLightbox(-1));
   document.querySelector('[data-lightbox-next]')?.addEventListener('click', () => moveLightbox(1));
+  lightbox?.addEventListener('close', restoreLightboxFocus);
   lightbox?.addEventListener('click', (event) => {
     if (event.target === lightbox) closeLightbox();
   });
   document.addEventListener('keydown', (event) => {
     if (!lightbox?.open) return;
+    if (event.key === 'Escape') {
+      closeLightbox();
+      return;
+    }
     if (event.key === 'ArrowLeft') moveLightbox(-1);
     if (event.key === 'ArrowRight') moveLightbox(1);
   });

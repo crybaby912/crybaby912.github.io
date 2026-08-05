@@ -196,6 +196,7 @@ img {
 
 .menu-toggle {
   display: none;
+  min-height: 44px;
   padding: 8px 0;
   border: 0;
   background: transparent;
@@ -597,6 +598,7 @@ img {
 .category-filter,
 .showcase-filter {
   flex: 1;
+  min-height: 38px;
   padding: 9px 10px;
   border: 0;
   border-radius: 2px;
@@ -1378,6 +1380,11 @@ img {
   list-style: none;
 }
 
+.incident-more summary:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 4px;
+}
+
 .incident-more summary::-webkit-details-marker {
   display: none;
 }
@@ -1741,8 +1748,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid var(--line-dark);
   background: transparent;
