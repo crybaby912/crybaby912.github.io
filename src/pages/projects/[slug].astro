@@ -11,6 +11,22 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const screenshots = project.screenshots ?? [];
+const screenshotGroups = [
+  {
+    key: 'desktop',
+    eyebrow: '01 / 桌面端界面',
+    title: '商家经营工作台',
+    body: '把订单、优惠、评价和客服放在同一套宽屏工作流里，重点看信息层级与业务状态。',
+    items: screenshots.filter((shot) => shot.kind === 'desktop'),
+  },
+  {
+    key: 'mobile',
+    eyebrow: '02 / 移动端界面',
+    title: '用户点餐与服务流程',
+    body: '按真实使用顺序整理首页、菜品、地址、订单和客服，保持每张手机界面有稳定的阅读尺寸。',
+    items: screenshots.filter((shot) => shot.kind === 'mobile'),
+  },
+].filter((group) => group.items.length);
 const pageTitle = project.title + ' / CRYBABY912';
 const pageDescription = project.title + ' 项目案例：' + project.description;
 const canonicalURL = new URL('/projects/' + project.slug + '/', Astro.site);
@@ -115,7 +131,7 @@ const socialImage = new URL(project.cover, Astro.site);
             <h2 class="section-title" data-detail-reveal>真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
             <p class="section-copy" data-detail-reveal>下面挑选的是会改变系统设计的故障，而不是纯粹的文案或样式调整。每条记录都保留现象、根因、修复和最终留下的工程判断。</p>
             <div class="incident-grid">
-              {project.incidents.map((incident, index) => <article class="incident-card" data-detail-reveal><span class="incident-number">复盘 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
+              {project.incidents.map((incident, index) => <article class={'incident-card ' + (project.incidents.length % 2 === 1 && index === project.incidents.length - 1 ? 'is-closing' : '')} data-detail-reveal><span class="incident-number">复盘 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
             </div>
           </div>
         </section>
@@ -149,14 +165,30 @@ const socialImage = new URL(project.cover, Astro.site);
                   <p class="showcase-count" data-gallery-count>共 {screenshots.length} 个界面</p>
                 </div>
               </div>
-              <div class="showcase-grid">
-                {screenshots.map((shot, index) => (
-                  <button type="button" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile') + (index === 0 ? ' is-feature' : '')} data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
-                    <span class="showcase-item-top"><span>{shot.group === 'user' ? '用户端' : '商家端'}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
-                    <span class="showcase-image"><img src={shot.src} alt={project.title + ' - ' + shot.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" /></span>
-                    <span class="showcase-item-copy"><strong>{shot.title}</strong><small>{shot.caption}</small></span>
-                    <span class="showcase-open" aria-hidden="true">↗</span>
-                  </button>
+              <div class="showcase-groups">
+                {screenshotGroups.map((group) => (
+                  <section class={'showcase-group showcase-group-' + group.key} data-gallery-section={group.key}>
+                    <div class="showcase-group-heading" data-detail-reveal>
+                      <div>
+                        <p class="showcase-group-eyebrow">{group.eyebrow}</p>
+                        <h3>{group.title}</h3>
+                      </div>
+                      <p>{group.body}</p>
+                    </div>
+                    <div class="showcase-grid">
+                      {group.items.map((shot) => {
+                        const index = screenshots.indexOf(shot);
+                        return (
+                          <button type="button" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile')} data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
+                            <span class="showcase-item-top"><span>{shot.group === 'user' ? '用户端' : '商家端'}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
+                            <span class="showcase-image"><img src={shot.src} alt={project.title + ' - ' + shot.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" /></span>
+                            <span class="showcase-item-copy"><strong>{shot.title}</strong><small>{shot.caption}</small></span>
+                            <span class="showcase-open" aria-hidden="true">↗</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
                 ))}
               </div>
             </div>
@@ -211,6 +243,7 @@ const socialImage = new URL(project.cover, Astro.site);
 
   const galleryItems = [...document.querySelectorAll('[data-gallery-item]')];
   const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
+  const gallerySections = [...document.querySelectorAll('[data-gallery-section]')];
   const galleryCount = document.querySelector('[data-gallery-count]');
   const lightbox = document.querySelector('[data-lightbox]');
   const lightboxImage = document.querySelector('[data-lightbox-image]');
@@ -220,6 +253,11 @@ const socialImage = new URL(project.cover, Astro.site);
   let currentIndex = 0;
 
   const visibleItems = () => galleryItems.filter((item) => !item.hidden);
+  const updateGallerySections = () => {
+    gallerySections.forEach((section) => {
+      section.hidden = !section.querySelector('[data-gallery-item]:not([hidden])');
+    });
+  };
   const renderLightbox = (item) => {
     if (!item || !lightboxImage) return;
     currentIndex = Number(item.getAttribute('data-gallery-index'));
@@ -258,6 +296,7 @@ const socialImage = new URL(project.cover, Astro.site);
         button.classList.toggle('is-active', active);
         button.setAttribute('aria-pressed', String(active));
       });
+      gallerySections.forEach((section) => { section.hidden = false; });
       galleryItems.forEach((item) => {
         const matches = group === 'all' || item.getAttribute('data-gallery-group') === group;
         window.clearTimeout(item.filterTimer);
@@ -272,6 +311,7 @@ const socialImage = new URL(project.cover, Astro.site);
           }, 220);
         }
       });
+      window.setTimeout(updateGallerySections, 230);
       if (galleryCount) galleryCount.textContent = '显示 ' + visibleItems().filter((item) => group === 'all' || item.getAttribute('data-gallery-group') === group).length + ' 个界面';
     });
   });

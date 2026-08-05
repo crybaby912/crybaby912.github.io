@@ -5,7 +5,8 @@ import '../styles/site.css';
 const categories = ['ALL', ...new Set(projects.map((project) => project.category))];
 const totalIncidents = projects.reduce((count, project) => count + project.incidents.length, 0);
 const totalEvidence = projects.reduce((count, project) => count + project.evidence.length, 0);
-const featurePreview = featuredProject.screenshots?.find((shot) => shot.group === 'admin' && shot.kind === 'desktop')?.src ?? featuredProject.cover;
+const featurePreview = featuredProject.heroPreview ?? featuredProject.cover;
+const featurePreviewFit = featuredProject.heroPreviewFit ?? featuredProject.coverFit;
 const pageTitle = 'CRYBABY912 / 全栈与 AI 工程作品集';
 const pageDescription = 'CRYBABY912 的个人项目作品集，记录全栈系统、AI 应用和真实工程问题的解决过程。';
 const canonicalURL = new URL('/', Astro.site);
@@ -73,8 +74,8 @@ const methodSteps = [
                 <span>食汇外卖 / 商家工作台</span>
                 <span>运营端 · {featuredProject.year}</span>
               </div>
-              <figure class="hero-visual">
-                <img src={featurePreview} alt="食汇外卖商家工作台界面" loading="eager" />
+              <figure class={'hero-visual ' + (featurePreviewFit === 'contain' ? 'is-contain' : 'is-cover')}>
+                <img src={featurePreview} alt="食汇外卖商家端与用户端界面预览" loading="eager" />
                 <span class="media-badge">真实项目界面</span>
               </figure>
               <div class="hero-visual-footer">

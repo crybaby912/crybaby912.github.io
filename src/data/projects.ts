@@ -59,6 +59,8 @@ export type Project = {
   tech: string[];
   cover: string;
   coverFit: 'contain' | 'cover';
+  heroPreview?: string;
+  heroPreviewFit?: 'contain' | 'cover';
   screenshots?: ProjectScreenshot[];
   github: string;
   role: string;
@@ -88,8 +90,10 @@ export const projects: Project[] = [
     description: '面向校园餐饮场景的全栈外卖系统，覆盖点餐、订单、配送、商家经营和 AI 客服。',
     summary: '这不是一个只展示菜品的页面，而是一条从用户点餐延伸到商家经营的完整业务链。订单状态、库存、优惠、配送和 AI 都必须在同一个业务事实下工作。',
     tech: ['Spring Boot', 'Vue / uni-app', 'MySQL', 'Redis', 'Spring AI', 'WebSocket'],
-    cover: '/projects/food-take-out/food-dashboard.png',
-    coverFit: 'contain',
+    cover: '/projects/food-take-out/food-cover-collage.png',
+    coverFit: 'cover',
+    heroPreview: '/projects/food-take-out/food-hero-preview.png',
+    heroPreviewFit: 'cover',
     screenshots: [
       { src: '/projects/food-take-out/food-dashboard.png', title: '\u5546\u5bb6\u5de5\u4f5c\u53f0', caption: '\u8ba2\u5355\u3001\u7ecf\u8425\u6570\u636e\u4e0e\u83dc\u54c1\u72b6\u6001\u96c6\u4e2d\u5728\u540c\u4e00\u4e2a\u5de5\u4f5c\u53f0\u3002', group: 'admin', kind: 'desktop' },
       { src: '/projects/food-take-out/food-order-mobile.png', title: '\u70b9\u9910\u9996\u9875', caption: '\u5148\u786e\u8ba4\u5e97\u94fa\u3001\u914d\u9001\u4fe1\u606f\u548c\u4f18\u60e0\uff0c\u518d\u8fdb\u5165\u70b9\u9910\u3002', group: 'user', kind: 'mobile' },
