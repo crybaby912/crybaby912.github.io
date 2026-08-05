@@ -691,8 +691,25 @@ img {
   object-fit: contain;
 }
 
+.project-media.is-contain,
+.detail-media.is-contain {
+  padding: 16px 22px;
+  background: #cbd8d3;
+}
+
+.project-media.is-contain img,
+.detail-media.is-contain img {
+  border: 1px solid rgba(16, 36, 33, .24);
+  border-radius: 3px;
+  box-shadow: 0 10px 22px rgba(16, 36, 33, .14);
+}
+
 .project-card:hover .project-media img {
   transform: scale(1.025);
+}
+
+.project-card:hover .project-media.is-contain img {
+  transform: scale(1.008);
 }
 
 .project-media::after {
@@ -1015,6 +1032,7 @@ img {
 .detail-media {
   position: relative;
   min-width: 0;
+  margin: 0;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -2084,6 +2102,11 @@ button:focus-visible {
 
   .detail-media {
     aspect-ratio: 16 / 11;
+  }
+
+  .project-media.is-contain,
+  .detail-media.is-contain {
+    padding: 12px 14px;
   }
 
   .metric-grid {
