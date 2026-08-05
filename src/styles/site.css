@@ -1313,49 +1313,6 @@ img {
   transition: border-color .25s ease, transform .25s ease;
 }
 
-.incident-card.is-closing {
-  display: grid;
-  grid-template-columns: minmax(190px, .72fr) repeat(3, minmax(0, 1fr));
-  grid-column: 1 / -1;
-  column-gap: 24px;
-  row-gap: 0;
-  min-height: 0;
-}
-
-.incident-card.is-closing .incident-number {
-  grid-column: 1;
-}
-
-.incident-card.is-closing h3 {
-  grid-column: 1;
-  margin-top: 18px;
-}
-
-.incident-card.is-closing .incident-field {
-  align-self: start;
-}
-
-.incident-card.is-closing .incident-field:nth-of-type(1) {
-  grid-column: 2;
-}
-
-.incident-card.is-closing .incident-field:nth-of-type(2) {
-  grid-column: 3;
-}
-
-.incident-card.is-closing .incident-field:nth-of-type(3) {
-  grid-column: 4;
-}
-
-.incident-card.is-closing .incident-field + .incident-field {
-  margin-top: 0;
-}
-
-.incident-card.is-closing .incident-lesson {
-  grid-column: 2 / -1;
-  margin-top: 20px;
-}
-
 .incident-card:hover {
   transform: translateY(-3px);
   border-color: rgba(239, 189, 67, .76);
@@ -1401,6 +1358,62 @@ img {
   color: rgba(251, 252, 250, .86);
   font-size: 13px;
   line-height: 1.66;
+}
+
+.incident-more {
+  margin-top: 14px;
+  border-top: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.incident-more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 17px 2px;
+  color: var(--paper-bright);
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+}
+
+.incident-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.incident-more summary span:first-child {
+  color: var(--sun);
+}
+
+.incident-more summary span:last-child {
+  color: rgba(251, 252, 250, .6);
+}
+
+.incident-more summary::after {
+  display: block;
+  flex: 0 0 auto;
+  color: var(--sun);
+  content: '+';
+  font-size: 18px;
+  line-height: 1;
+}
+
+.incident-more[open] summary::after {
+  content: '−';
+}
+
+.incident-more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0 0 16px;
+}
+
+.incident-more-card {
+  min-height: 0;
+  border-color: rgba(235, 244, 240, .14);
+  background: rgba(251, 252, 250, .025);
 }
 
 .evidence-section {
@@ -2105,12 +2118,12 @@ button:focus-visible {
     min-height: 0;
   }
 
-  .incident-card.is-closing {
-    display: flex;
-  }
-
   .showcase-grid {
     gap: 10px;
+  }
+
+  .incident-more-grid {
+    grid-template-columns: 1fr;
   }
 
   .showcase-group-heading {

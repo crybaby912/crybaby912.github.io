@@ -131,8 +131,16 @@ const socialImage = new URL(project.cover, Astro.site);
             <h2 class="section-title" data-detail-reveal>真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
             <p class="section-copy" data-detail-reveal>下面挑选的是会改变系统设计的故障，而不是纯粹的文案或样式调整。每条记录都保留现象、根因、修复和最终留下的工程判断。</p>
             <div class="incident-grid">
-              {project.incidents.map((incident, index) => <article class={'incident-card ' + (project.incidents.length % 2 === 1 && index === project.incidents.length - 1 ? 'is-closing' : '')} data-detail-reveal><span class="incident-number">复盘 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
+              {project.incidents.slice(0, 4).map((incident, index) => <article class="incident-card" data-detail-reveal><span class="incident-number">复盘 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
             </div>
+            {project.incidents.length > 4 ? (
+              <details class="incident-more" data-detail-reveal>
+                <summary><span>补充复盘 · {project.incidents.length - 4} 条</span><span>展开查看</span></summary>
+                <div class="incident-more-grid">
+                  {project.incidents.slice(4).map((incident, index) => <article class="incident-card incident-more-card"><span class="incident-number">补充 0{index + 1}</span><h3>{incident.title}</h3><dl class="incident-field"><dt>现象</dt><dd>{incident.symptom}</dd></dl><dl class="incident-field"><dt>根因</dt><dd>{incident.rootCause}</dd></dl><dl class="incident-field"><dt>修复</dt><dd>{incident.fix}</dd></dl><p class="incident-lesson">{incident.lesson}</p></article>)}
+                </div>
+              </details>
+            ) : null}
           </div>
         </section>
 
