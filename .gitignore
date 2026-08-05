@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # local design plan
 /docs/design-improvement-plan.md
+
+# Playwright CLI temporary artifacts
+.playwright-cli/
