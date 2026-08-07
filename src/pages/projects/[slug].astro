@@ -11,22 +11,31 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const screenshots = project.screenshots ?? [];
-const screenshotGroups = [
-  {
-    key: 'desktop',
-    eyebrow: '01 / 桌面端界面',
-    title: '商家经营工作台',
-    body: '把订单、优惠、评价和客服放在同一套宽屏工作流里，重点看信息层级与业务状态。',
-    items: screenshots.filter((shot) => shot.kind === 'desktop'),
-  },
-  {
-    key: 'mobile',
-    eyebrow: '02 / 移动端界面',
-    title: '用户点餐与服务流程',
-    body: '按真实使用顺序整理首页、菜品、地址、订单和客服，保持每张手机界面有稳定的阅读尺寸。',
-    items: screenshots.filter((shot) => shot.kind === 'mobile'),
-  },
-].filter((group) => group.items.length);
+const screenshotGroupLabels = {
+  user: '用户端',
+  admin: '商家端',
+  platform: '平台端',
+};
+const screenshotFilterGroups = [...new Set(screenshots.map((shot) => shot.group))];
+const screenshotSections = (
+  project.screenshotSections ?? [
+    {
+      key: 'desktop',
+      eyebrow: '01 / 桌面端界面',
+      title: '商家经营工作台',
+      body: '把订单、优惠、评价和客服放在同一套宽屏工作流里，重点看信息层级与业务状态。',
+    },
+    {
+      key: 'mobile',
+      eyebrow: '02 / 移动端界面',
+      title: '用户点餐与服务流程',
+      body: '按真实使用顺序整理首页、菜品、地址、订单和客服，保持每张手机界面有稳定的阅读尺寸。',
+    },
+  ]
+).map((section) => ({
+  ...section,
+  items: screenshots.filter((shot) => shot.kind === section.key),
+})).filter((section) => section.items.length);
 const pageTitle = project.title + ' / CRYBABY912';
 const pageDescription = project.title + ' 项目案例：' + project.description;
 const canonicalURL = new URL('/projects/' + project.slug + '/', Astro.site);
@@ -164,17 +173,16 @@ const socialImage = new URL(project.cover, Astro.site);
                   <h2 class="section-title">真实界面，<br /><em>让业务链路可见。</em></h2>
                 </div>
                 <div class="showcase-intro">
-                  <p class="section-copy">这里选取用户端、商家端和智能客服的关键界面，按真实使用路径整理。点击任意界面可以查看完整截图。</p>
+                  <p class="section-copy">{project.screenshotIntro ?? '这里选取项目的关键界面，按真实使用路径整理。点击任意界面可以查看完整截图。'}</p>
                   <div class="showcase-switcher" role="group" aria-label="界面筛选">
                     <button type="button" class="showcase-filter is-active" data-gallery-filter="all" aria-pressed="true">全部</button>
-                    <button type="button" class="showcase-filter" data-gallery-filter="user" aria-pressed="false">用户端</button>
-                    <button type="button" class="showcase-filter" data-gallery-filter="admin" aria-pressed="false">商家端</button>
+                    {screenshotFilterGroups.map((group) => <button type="button" class="showcase-filter" data-gallery-filter={group} aria-pressed="false">{screenshotGroupLabels[group]}</button>)}
                   </div>
                   <p class="showcase-count" data-gallery-count>共 {screenshots.length} 个界面</p>
                 </div>
               </div>
               <div class="showcase-groups">
-                {screenshotGroups.map((group) => (
+                {screenshotSections.map((group) => (
                   <section class={'showcase-group showcase-group-' + group.key} data-gallery-section={group.key}>
                     <div class="showcase-group-heading" data-detail-reveal>
                       <div>
@@ -188,7 +196,7 @@ const socialImage = new URL(project.cover, Astro.site);
                         const index = screenshots.indexOf(shot);
                         return (
                           <button type="button" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile')} data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
-                            <span class="showcase-item-top"><span>{shot.group === 'user' ? '用户端' : '商家端'}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
+                            <span class="showcase-item-top"><span>{screenshotGroupLabels[shot.group]}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
                             <span class="showcase-image"><img src={shot.src} alt={project.title + ' - ' + shot.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" /></span>
                             <span class="showcase-item-copy"><strong>{shot.title}</strong><small>{shot.caption}</small></span>
                             <span class="showcase-open" aria-hidden="true">↗</span>
