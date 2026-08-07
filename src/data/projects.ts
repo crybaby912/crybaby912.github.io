@@ -183,7 +183,7 @@ export const projects: Project[] = [
     summary: 'AI Agent Workflow 把一次模型调用扩展成可治理的执行系统：用户在浏览器画布上组合输入、LLM、Agent、Supervisor、HTTP 和 TTS 节点，后端将工作流固化为任务，再用 Agent Runtime、Tool/Skill Registry 和事件回放处理失败、恢复与协作。',
     tech: ['Java 17 / Spring Boot', 'React / TypeScript', 'React Flow', 'PostgreSQL / Flyway', 'Redis / Docker', 'SSE / Prometheus'],
     cover: '/projects/ai-agent-workflow/agent-workflow-02-execution-timeline.png',
-    coverFit: 'cover',
+    coverFit: 'contain',
     cardSignal: 'Agent / Supervisor / 可恢复执行',
     github: 'https://github.com/crybaby912/ai-agent-workflow',
     role: '独立设计与全栈开发',
