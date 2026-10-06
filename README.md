@@ -49,7 +49,9 @@ public/
 
 在 `src/data/projects.ts` 的 `projects` 数组中添加完整项目对象。首页和详情页会自动读取数据，不需要复制页面模板。
 
-项目图片放入 `public/`，数据中的 `cover` 使用以 `/` 开头的路径。截图或 GIF 使用 `coverFit: 'contain'` 保证完整显示，需要铺满区域时再使用 `coverFit: 'cover'`。
+项目图片放入 `public/`，数据中的 `cover` 使用以 `/` 开头的路径。界面截图使用 `coverFit: 'contain'`，展示时保留完整内容；不要使用持续缩放或覆盖图片内容的说明条。
+
+画廊里的 GIF 需要同时提供 `poster` 静态首帧，列表只加载首帧，在灯箱中手动播放。原始 GIF 与完整截图仍可通过“打开原图”访问。
 
 每个案例建议保留以下信息：
 
@@ -66,6 +68,8 @@ public/
 页面使用原生 CSS、Web Animations API 和按需运行的弹簧计算，不引入整套 WebGL/WebGPU、音频或示例资源。玻璃效果是 CSS 透明、模糊与高光的近似表现，不是真实光学折射。截图保持完整，不做循环缩放。
 
 导航提供“暂停动效”；系统开启减少动态效果时自动停用。离屏装饰停止运行，禁用 JavaScript 时正文与项目链接仍可阅读。
+
+共享入口为 `src/scripts/site.ts`，首页筛选为 `home.ts`，画廊及灯箱为 `gallery.ts`，动效原语集中在 `motion.ts`。修改后至少验证生产构建、320/390/768/1280/1440px 布局、连续筛选、灯箱 Tab/Escape、暂停动效与无 JavaScript 降级。
 
 ## 发布
 

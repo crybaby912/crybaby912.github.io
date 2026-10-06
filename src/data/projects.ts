@@ -41,6 +41,7 @@ export type ProjectEvidence = {
 
 export type ProjectScreenshot = {
   src: string;
+  poster?: string;
   title: string;
   caption: string;
   group: 'user' | 'admin' | 'platform';
@@ -242,7 +243,7 @@ export const projects: Project[] = [
     screenshots: [
       { src: '/projects/ai-agent-workflow/agent-workflow-01-canvas.png', title: '工作流可视化编排', caption: '节点注册表提供输入、LLM、Agent、Supervisor 与工具节点，画布只保存配置引用，不保存密钥。', group: 'platform', kind: 'desktop' },
       { src: '/projects/ai-agent-workflow/agent-workflow-02-execution-timeline.png', title: 'Agent 与 Supervisor 执行时间线', caption: '运行检视展示节点耗时、Agent 步骤、Tool 调用、Token、成本与终态，SSE 事件沿同一条执行链回传。', group: 'platform', kind: 'desktop' },
-      { src: '/projects/ai-agent-workflow/agent-workflow-demo.gif', title: '90 秒浏览器演示', caption: '隔离 Compose 环境中的真实浏览器演示，串起 Agent 管理、Tool 调用摘要、Supervisor 执行和来源追踪。', group: 'platform', kind: 'desktop' },
+      { src: '/projects/ai-agent-workflow/agent-workflow-demo.gif', poster: '/projects/ai-agent-workflow/agent-workflow-demo-poster.png', title: '90 秒浏览器演示', caption: '隔离 Compose 环境中的真实浏览器演示，串起 Agent 管理、Tool 调用摘要、Supervisor 执行和来源追踪。', group: 'platform', kind: 'desktop' },
       { src: '/projects/ai-agent-workflow/agent-workflow-03-agent-center.png', title: 'Agent 管理中心', caption: '项目内管理 Agent、Tool/Skill 绑定、Provider 引用和预算边界；发布快照让执行使用明确版本。', group: 'platform', kind: 'desktop' },
       { src: '/projects/ai-agent-workflow/agent-workflow-04-supervisor-plan.png', title: 'Supervisor 协作计划配置', caption: '固定 Researcher、Writer、Reviewer 计划显式配置依赖、Tool、预算和截止时间，避免动态扩大协作范围。', group: 'platform', kind: 'desktop' },
       { src: '/projects/ai-agent-workflow/agent-workflow-05-tool-registry.png', title: 'Tool 注册中心', caption: '工具版本、描述、权限范围、输入 Schema 与项目白名单在同一个注册中心管理。', group: 'platform', kind: 'desktop' },

@@ -1,47 +1,44 @@
 ---
+import SiteHeader from '../components/SiteHeader.astro';
+import '../styles/site.css';
+import '../styles/motion.css';
 const pageTitle = '页面未找到 / CRYBABY912';
 ---
-
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#111416" />
+    <meta name="theme-color" content="#f6f8f5" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
   </head>
-  <body>
-    <main>
-      <header>
-        <a class="brand" href="/" aria-label="返回首页"><span>C9</span><b>CRYBABY912</b></a>
-        <small>ERROR / 404</small>
-      </header>
-      <section>
-        <p>THIS ROUTE ENDS HERE</p>
-        <h1>这里没有页面，<br /><em>但还有作品<span class="mobile-line">可以看。</span></em></h1>
-        <a class="home-link" href="/">返回作品集 <span>↗</span></a>
-      </section>
-      <footer><span>404 / NOT FOUND</span><span>KEEP EXPLORING</span></footer>
-    </main>
+  <body id="top">
+    <a class="skip-link" href="#content">跳到主要内容</a>
+    <div class="site-shell">
+      <SiteHeader detail />
+      <main id="content" class="container error-page">
+        <p class="error-index" aria-hidden="true" data-reveal>404</p>
+        <div class="error-copy">
+          <p class="eyebrow" data-reveal>这个地址暂时没有内容</p>
+          <h1 class="section-title" data-reveal>页面没有找到，<br /><em>项目还在这里。</em></h1>
+          <p class="section-copy" data-reveal>链接可能已更新。可以回到作品集，继续查看项目、系统设计和故障复盘。</p>
+          <div class="hero-actions" data-reveal>
+            <a class="button button-primary" href="/#work">查看全部项目 <span aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="/">回到首页</a>
+          </div>
+        </div>
+      </main>
+      <footer class="site-footer"><span>© 2026 CRYBABY912</span><span>页面未找到 · 404</span></footer>
+    </div>
   </body>
 </html>
-
 <style>
-  :global(*) { box-sizing: border-box; }
-  :global(body) { background: #111416; color: #f1eee6; font-family: Arial, "Microsoft YaHei", sans-serif; margin: 0; }
-  :global(a) { color: inherit; text-decoration: none; }
-  main { display: flex; flex-direction: column; min-height: 100vh; padding: 0 clamp(24px, 8vw, 132px); }
-  header, footer { align-items: center; display: flex; height: 80px; justify-content: space-between; }
-  .brand { align-items: center; display: flex; font-size: 13px; gap: 11px; }.brand span { align-items: center; border: 1px solid rgba(241,238,230,.8); border-radius: 50%; display: flex; font-size: 11px; height: 30px; justify-content: center; width: 30px; }.brand b { font-weight: 700; }
-  header small, footer { color: rgba(241,238,230,.42); font-size: 10px; }
-  section { margin: auto 0; padding: 70px 0; }
-  section > p { color: #9ce7c3; font-size: 11px; font-weight: 700; margin: 0 0 28px; }
-  h1 { font-size: 86px; font-weight: 500; letter-spacing: 0; line-height: 1; margin: 0 0 50px; max-width: 1000px; overflow-wrap: anywhere; }
-  h1 em { color: #f7a779; font-style: normal; }
-  .mobile-line { display: inline; }
-  .home-link { border-bottom: 1px solid #f7a779; color: #f7a779; display: inline-block; font-size: 13px; padding-bottom: 5px; }.home-link span { margin-left: 7px; }
-  footer { border-top: 1px solid rgba(241,238,230,.16); }
-  a:focus-visible { outline: 2px solid #9ce7c3; outline-offset: 5px; }
-  @media (max-width: 800px) { header { height: 68px; }.brand { font-size: 11px; }header small { display: none; }h1 { font-size: 42px; max-width: 310px; overflow-wrap: anywhere; word-break: normal; }.mobile-line { display: block; }footer { align-items: flex-start; flex-direction: column; height: auto; gap: 10px; padding: 22px 0; } }
+  .error-page { display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 72px; min-height: calc(100dvh - 160px); padding-block: 80px; }
+  .error-index { margin: 0; color: var(--teal); font-size: clamp(120px, 20vw, 260px); font-weight: 750; letter-spacing: -.08em; line-height: 1; }
+  .error-copy { max-width: 640px; }
+  @media (max-width: 680px) {
+    .error-page { grid-template-columns: 1fr; gap: 36px; padding-block: 60px; }
+    .error-index { font-size: 130px; }
+  }
 </style>

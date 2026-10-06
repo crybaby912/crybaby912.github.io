@@ -1,6 +1,8 @@
 ---
 import { projects } from '../../data/projects';
+import SiteHeader from '../../components/SiteHeader.astro';
 import '../../styles/site.css';
+import '../../styles/motion.css';
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -63,12 +65,7 @@ const socialImage = new URL(project.cover, Astro.site);
     <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <a class="skip-link" href="#content">跳到主要内容</a>
     <div class="site-shell detail-shell">
-      <header class="detail-top">
-        <div class="container">
-          <a class="brand" href="/" aria-label="返回作品集首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
-          <a class="back-link" href="/">← 返回全部项目</a>
-        </div>
-      </header>
+      <SiteHeader detail />
 
       <main id="content">
         <section class="detail-hero">
@@ -87,9 +84,9 @@ const socialImage = new URL(project.cover, Astro.site);
                 <a class="button button-quiet" href="#incidents">直接看 Bug 复盘 <span aria-hidden="true">↓</span></a>
               </div>
             </div>
-            <figure class={'detail-media ' + (project.coverFit === 'contain' ? 'is-contain' : 'is-cover')} data-detail-reveal>
-              <span class="media-caption">{project.title} / 项目界面预览</span>
+            <figure class={'detail-media ' + (project.coverFit === 'contain' ? 'is-contain' : 'is-cover')} data-detail-reveal data-aperture>
               <img src={project.cover} alt={project.title + ' 项目演示'} loading="eager" />
+              <figcaption class="media-caption">{project.title} / 真实项目界面</figcaption>
             </figure>
           </div>
         </section>
@@ -100,7 +97,17 @@ const socialImage = new URL(project.cover, Astro.site);
           </div>
         </section>
 
-        <section class="detail-section">
+        <div class="case-nav-wrap">
+          <nav class="case-nav" aria-label="案例章节">
+            <a href="#problem" data-nav-link aria-current="location"><span>01</span> 概览</a>
+            <a href="#architecture" data-nav-link><span>02</span> 架构</a>
+            <a href="#incidents" data-nav-link><span>03</span> 复盘</a>
+            <a href="#evidence" data-nav-link><span>04</span> 证据</a>
+            {screenshots.length > 0 && <a href="#showcase" data-nav-link><span>05</span> 界面</a>}
+          </nav>
+        </div>
+
+        <section id="problem" class="detail-section" data-section>
           <div class="container section-split">
             <div data-detail-reveal><p class="section-label">01 / 问题定义</p><h2 class="section-title">{project.problem.title}</h2></div>
             <div data-detail-reveal><p class="problem-body">{project.problem.body}</p><ul class="constraint-list">{project.problem.constraints.map((constraint) => <li>{constraint}</li>)}</ul></div>
@@ -116,11 +123,11 @@ const socialImage = new URL(project.cover, Astro.site);
           </div>
         </section>
 
-        <section class="detail-section">
+        <section id="architecture" class="detail-section" data-section>
           <div class="container section-split">
             <div data-detail-reveal><p class="section-label">03 / 系统分层</p><h2 class="section-title">每一层都有<br /><em>自己的边界。</em></h2></div>
-            <div class="architecture-list" data-detail-reveal>
-              {project.architecture.map((layer) => <article class="architecture-row"><div class="architecture-layer">{layer.layer}</div><div><h3>{layer.title}</h3><p>{layer.body}</p></div><div class="architecture-tags">{layer.tags.map((tag) => <span>{tag}</span>)}</div></article>)}
+            <div class="architecture-list">
+              {project.architecture.map((layer) => <article class="architecture-row" data-detail-reveal><div class="architecture-layer">{layer.layer}</div><div><h3>{layer.title}</h3><p>{layer.body}</p></div><div class="architecture-tags">{layer.tags.map((tag) => <span>{tag}</span>)}</div></article>)}
             </div>
           </div>
         </section>
@@ -128,13 +135,13 @@ const socialImage = new URL(project.cover, Astro.site);
         <section class="detail-section alt">
           <div class="container section-split">
             <div data-detail-reveal><p class="section-label">04 / 关键取舍</p><h2 class="section-title">不是堆技术，<br /><em>而是明确取舍。</em></h2></div>
-            <div class="decision-list" data-detail-reveal>
-              {project.decisions.map((decision) => <article class="decision-card"><h3>{decision.title}</h3><dl class="decision-field"><dt>问题</dt><dd>{decision.problem}</dd></dl><dl class="decision-field"><dt>决定</dt><dd>{decision.decision}</dd></dl><dl class="decision-field"><dt>结果</dt><dd>{decision.result}</dd></dl></article>)}
+            <div class="decision-list">
+              {project.decisions.map((decision) => <article class="decision-card" data-detail-reveal><h3>{decision.title}</h3><dl class="decision-field"><dt>问题</dt><dd>{decision.problem}</dd></dl><dl class="decision-field"><dt>决定</dt><dd>{decision.decision}</dd></dl><dl class="decision-field"><dt>结果</dt><dd>{decision.result}</dd></dl></article>)}
             </div>
           </div>
         </section>
 
-        <section id="incidents" class="detail-section incident-section">
+        <section id="incidents" class="detail-section incident-section" data-section>
           <div class="container">
             <p class="section-label" data-detail-reveal>05 / 故障复盘</p>
             <h2 class="section-title" data-detail-reveal>真正有含金量的，<br /><em>通常是出问题之后。</em></h2>
@@ -153,19 +160,19 @@ const socialImage = new URL(project.cover, Astro.site);
           </div>
         </section>
 
-        <section class="detail-section evidence-section">
+        <section id="evidence" class="detail-section evidence-section" data-section>
           <div class="container section-split">
             <div data-detail-reveal><p class="section-label">06 / 验证证据</p><h2 class="section-title">让结果可以被<br /><em>别人复核。</em></h2></div>
-            <div data-detail-reveal>
-              <p class="section-copy">数字只在边界清楚时才有意义。这里标注测试环境、验收范围和仍然没有宣称完成的部分。</p>
-              <div class="evidence-grid">{project.evidence.map((item) => <article class="evidence-card"><span class="evidence-value">{item.value}</span><strong>{item.label}</strong><p>{item.detail}</p></article>)}</div>
+            <div>
+              <p class="section-copy" data-detail-reveal>数字只在边界清楚时才有意义。这里标注测试环境、验收范围和仍然没有宣称完成的部分。</p>
+              <div class="evidence-grid">{project.evidence.map((item) => <article class="evidence-card" data-detail-reveal><span class="evidence-value">{item.value}</span><strong>{item.label}</strong><p>{item.detail}</p></article>)}</div>
               <div class="next-list">{project.nextSteps.map((nextStep, index) => <div class="next-item"><span>下一步 0{index + 1}</span><p>{nextStep}</p></div>)}</div>
             </div>
           </div>
         </section>
 
         {screenshots.length ? (
-          <section id="showcase" class="detail-section showcase-section">
+          <section id="showcase" class="detail-section showcase-section" data-section>
             <div class="container">
               <div class="showcase-header" data-detail-reveal>
                 <div>
@@ -178,7 +185,7 @@ const socialImage = new URL(project.cover, Astro.site);
                     <button type="button" class="showcase-filter is-active" data-gallery-filter="all" aria-pressed="true">全部</button>
                     {screenshotFilterGroups.map((group) => <button type="button" class="showcase-filter" data-gallery-filter={group} aria-pressed="false">{screenshotGroupLabels[group]}</button>)}
                   </div>
-                  <p class="showcase-count" data-gallery-count>共 {screenshots.length} 个界面</p>
+                  <p class="showcase-count" data-gallery-count aria-live="polite">共 {screenshots.length} 个界面</p>
                 </div>
               </div>
               <div class="showcase-groups">
@@ -195,12 +202,12 @@ const socialImage = new URL(project.cover, Astro.site);
                       {group.items.map((shot) => {
                         const index = screenshots.indexOf(shot);
                         return (
-                          <button type="button" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile')} data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
-                            <span class="showcase-item-top"><span>{screenshotGroupLabels[shot.group]}</span><span>{shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
-                            <span class="showcase-image"><img src={shot.src} alt={project.title + ' - ' + shot.title} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" /></span>
+                          <a href={shot.src} target="_blank" rel="noreferrer" class={'showcase-item ' + (shot.kind === 'desktop' ? 'is-desktop' : 'is-mobile')} data-detail-reveal data-gallery-item data-gallery-group={shot.group} data-gallery-index={index} data-gallery-src={shot.src} data-gallery-poster={shot.poster} data-gallery-title={shot.title} data-gallery-caption={shot.caption} aria-label={'打开 ' + shot.title + ' 详情'}>
+                            <span class="showcase-item-top"><span>{screenshotGroupLabels[shot.group]}</span><span>{shot.poster ? '演示 · 手动播放' : shot.kind === 'mobile' ? '移动端' : '桌面端'}</span></span>
+                            <span class="showcase-image"><img src={shot.poster ?? shot.src} alt={project.title + ' - ' + shot.title} loading="lazy" decoding="async" /></span>
                             <span class="showcase-item-copy"><strong>{shot.title}</strong><small>{shot.caption}</small></span>
                             <span class="showcase-open" aria-hidden="true">↗</span>
-                          </button>
+                          </a>
                         );
                       })}
                     </div>
@@ -219,12 +226,15 @@ const socialImage = new URL(project.cover, Astro.site);
                 <button class="lightbox-close" type="button" data-lightbox-close aria-label="关闭预览" title="关闭预览">×</button>
               </div>
               <figure class="lightbox-figure">
-                <img data-lightbox-image src="" alt="" />
+                <p class="lightbox-status" data-lightbox-status role="status" hidden></p>
+                <img data-lightbox-image alt="" hidden />
                 <figcaption data-lightbox-caption></figcaption>
               </figure>
               <div class="lightbox-footer">
-                <span data-lightbox-counter>01 / 01</span>
+                <span data-lightbox-counter aria-live="polite">01 / 01</span>
                 <div class="lightbox-actions">
+                  <button class="lightbox-play" type="button" data-lightbox-play hidden aria-pressed="false">播放演示</button>
+                  <a class="lightbox-original" data-lightbox-original target="_blank" rel="noreferrer">打开原图 ↗</a>
                   <button class="lightbox-arrow" type="button" data-lightbox-prev aria-label="上一张" title="上一张">←</button>
                   <button class="lightbox-arrow" type="button" data-lightbox-next aria-label="下一张" title="下一张">→</button>
                 </div>
@@ -247,136 +257,5 @@ const socialImage = new URL(project.cover, Astro.site);
 </html>
 
 <script>
-  document.documentElement.classList.add('js');
-
-  const progress = document.querySelector('.scroll-progress span');
-  const updateProgress = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress?.style.setProperty('transform', 'scaleX(' + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ')');
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-
-  const galleryItems = [...document.querySelectorAll('[data-gallery-item]')];
-  const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
-  const gallerySections = [...document.querySelectorAll('[data-gallery-section]')];
-  const galleryCount = document.querySelector('[data-gallery-count]');
-  const lightbox = document.querySelector('[data-lightbox]');
-  const lightboxImage = document.querySelector('[data-lightbox-image]');
-  const lightboxTitle = document.querySelector('#lightbox-title');
-  const lightboxCaption = document.querySelector('[data-lightbox-caption]');
-  const lightboxCounter = document.querySelector('[data-lightbox-counter]');
-  const lightboxClose = document.querySelector('[data-lightbox-close]');
-  let activeTrigger = null;
-  let currentIndex = 0;
-
-  const visibleItems = () => galleryItems.filter((item) => !item.hidden);
-  const updateGallerySections = () => {
-    gallerySections.forEach((section) => {
-      section.hidden = !section.querySelector('[data-gallery-item]:not([hidden])');
-    });
-  };
-  const renderLightbox = (item) => {
-    if (!item || !lightboxImage) return;
-    currentIndex = Number(item.getAttribute('data-gallery-index'));
-    lightboxImage.src = item.getAttribute('data-gallery-src') || '';
-    lightboxImage.alt = item.getAttribute('data-gallery-title') || '';
-    if (lightboxTitle) lightboxTitle.textContent = item.getAttribute('data-gallery-title') || '界面详情';
-    if (lightboxCaption) lightboxCaption.textContent = item.getAttribute('data-gallery-caption') || '';
-    const visible = visibleItems();
-    const position = Math.max(visible.indexOf(item), 0);
-    if (lightboxCounter) lightboxCounter.textContent = String(position + 1).padStart(2, '0') + ' / ' + String(visible.length).padStart(2, '0');
-  };
-  const openLightbox = (item) => {
-    activeTrigger = item;
-    renderLightbox(item);
-    if (lightbox && !lightbox.open) {
-      if (lightbox.showModal) lightbox.showModal();
-      else lightbox.setAttribute('open', '');
-    }
-    window.requestAnimationFrame(() => lightboxClose?.focus());
-  };
-  const restoreLightboxFocus = () => {
-    const trigger = activeTrigger;
-    activeTrigger = null;
-    trigger?.focus();
-  };
-  const closeLightbox = () => {
-    if (lightbox?.open && lightbox.close) lightbox.close();
-    else {
-      lightbox?.removeAttribute('open');
-      restoreLightboxFocus();
-    }
-  };
-  const moveLightbox = (step) => {
-    const visible = visibleItems();
-    if (!visible.length) return;
-    const position = Math.max(visible.findIndex((item) => Number(item.getAttribute('data-gallery-index')) === currentIndex), 0);
-    openLightbox(visible[(position + step + visible.length) % visible.length]);
-  };
-
-  galleryItems.forEach((item) => item.addEventListener('click', () => openLightbox(item)));
-  galleryFilters.forEach((filter) => {
-    filter.addEventListener('click', () => {
-      const group = filter.getAttribute('data-gallery-filter');
-      galleryFilters.forEach((button) => {
-        const active = button === filter;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-pressed', String(active));
-      });
-      gallerySections.forEach((section) => { section.hidden = false; });
-      galleryItems.forEach((item) => {
-        const matches = group === 'all' || item.getAttribute('data-gallery-group') === group;
-        window.clearTimeout(item.filterTimer);
-        if (matches) {
-          item.hidden = false;
-          window.requestAnimationFrame(() => item.classList.remove('is-filtering'));
-        } else {
-          item.classList.add('is-filtering');
-          item.filterTimer = window.setTimeout(() => {
-            item.hidden = true;
-            item.classList.remove('is-filtering');
-          }, 220);
-        }
-      });
-      window.setTimeout(updateGallerySections, 230);
-      if (galleryCount) galleryCount.textContent = '显示 ' + visibleItems().filter((item) => group === 'all' || item.getAttribute('data-gallery-group') === group).length + ' 个界面';
-    });
-  });
-  document.querySelector('[data-lightbox-close]')?.addEventListener('click', closeLightbox);
-  document.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => moveLightbox(-1));
-  document.querySelector('[data-lightbox-next]')?.addEventListener('click', () => moveLightbox(1));
-  lightbox?.addEventListener('close', restoreLightboxFocus);
-  lightbox?.addEventListener('click', (event) => {
-    if (event.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (!lightbox?.open) return;
-    if (event.key === 'Escape') {
-      closeLightbox();
-      return;
-    }
-    if (event.key === 'ArrowLeft') moveLightbox(-1);
-    if (event.key === 'ArrowRight') moveLightbox(1);
-  });
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealItems = [...document.querySelectorAll('[data-detail-reveal]')];
-  revealItems.forEach((item, index) => {
-    item.dataset.reveal = 'up';
-    item.style.setProperty('--delay', Math.min(index * 45, 320) + 'ms');
-  });
-  const show = (item) => item.classList.add('is-visible');
-  if (reducedMotion || !('IntersectionObserver' in window)) revealItems.forEach(show);
-  else {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          show(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px' });
-    revealItems.forEach((item) => revealObserver.observe(item));
-  }
+  import '../../scripts/gallery';
 </script>
