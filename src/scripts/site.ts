@@ -1,4 +1,5 @@
 import { animate, motionQuery, reduced, revealPage, selectionIndicator, stopMotion } from './motion';
+import './theme';
 
 const root = document.documentElement;
 root.classList.add('motion-ready');

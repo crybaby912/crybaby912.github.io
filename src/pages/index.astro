@@ -2,8 +2,10 @@
 import { featuredProject, projects } from '../data/projects';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ThemeHead from '../components/ThemeHead.astro';
 import '../styles/site.css';
 import '../styles/motion.css';
+import '../styles/theme.css';
 
 const categories = ['ALL', ...new Set(projects.map((project) => project.category))];
 const totalIncidents = projects.reduce((count, project) => count + project.incidents.length, 0);
@@ -27,7 +29,7 @@ const methodSteps = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#f4f5f1" />
+    <ThemeHead />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={pageTitle} />

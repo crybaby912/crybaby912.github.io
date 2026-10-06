@@ -1,8 +1,10 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ThemeHead from '../components/ThemeHead.astro';
 import '../styles/site.css';
 import '../styles/motion.css';
+import '../styles/theme.css';
 const pageTitle = '页面未找到 / CRYBABY912';
 ---
 <html lang="zh-CN">
@@ -10,7 +12,7 @@ const pageTitle = '页面未找到 / CRYBABY912';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#f6f8f5" />
+    <ThemeHead />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
   </head>

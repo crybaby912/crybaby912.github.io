@@ -3,8 +3,10 @@ import { projects } from '../../data/projects';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import CasePanel from '../../components/CasePanel.astro';
+import ThemeHead from '../../components/ThemeHead.astro';
 import '../../styles/site.css';
 import '../../styles/motion.css';
+import '../../styles/theme.css';
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -58,7 +60,7 @@ const socialImage = new URL(project.cover, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#f4f5f1" />
+    <ThemeHead />
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={pageTitle} />
