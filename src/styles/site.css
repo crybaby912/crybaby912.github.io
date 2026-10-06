@@ -1,21 +1,21 @@
 :root {
-  --paper: #f4f5f1;
-  --paper-deep: #e5ece8;
-  --paper-bright: #fbfcfa;
+  --paper: #f6f8f5;
+  --paper-deep: #edf2ee;
+  --paper-bright: #ffffff;
   --surface-soft: #edf2ef;
   --ink: #102421;
-  --muted: #65736e;
+  --muted: #586b63;
   --line: #d6dfdb;
   --line-dark: rgba(235, 244, 240, .18);
   --teal: #176f67;
   --teal-deep: #0d514d;
-  --coral: #e76d4d;
-  --sun: #efbd43;
+  --coral: #456d63;
+  --sun: #c8ddce;
   --night: #102622;
   --shadow: 0 20px 55px rgba(16, 36, 33, .08);
   --shadow-card: 0 12px 28px rgba(16, 36, 33, .07);
-  --radius-sm: 4px;
-  --radius-md: 7px;
+  --radius-sm: 12px;
+  --radius-md: 20px;
   color: var(--ink);
   background: var(--paper);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
@@ -299,9 +299,9 @@ img {
 .section-title {
   max-width: 680px;
   margin: 0;
-  font-size: clamp(36px, 4.4vw, 58px);
+  font-size: clamp(32px, 3.5vw, 44px);
   font-weight: 650;
-  line-height: 1.08;
+  line-height: 1.28;
   text-wrap: balance;
 }
 
@@ -378,15 +378,14 @@ img {
 }
 
 .home-hero {
-  padding: 82px 0 84px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-bright);
+  padding: 92px 0 72px;
+  background: radial-gradient(ellipse at 78% 16%, #dceae0 0%, transparent 51%), var(--paper);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-  gap: clamp(46px, 7vw, 88px);
+  gap: clamp(32px, 4vw, 64px);
   align-items: center;
 }
 
@@ -404,11 +403,13 @@ img {
 .hero-title {
   max-width: 650px;
   margin: 0;
-  font-size: clamp(50px, 6.2vw, 82px);
+  font-size: clamp(42px, 4.25vw, 59px);
   font-weight: 680;
-  line-height: 1.02;
-  text-wrap: balance;
+  line-height: 1.28;
+  letter-spacing: -.04em;
 }
+
+.hero-title > * { display: block; }
 
 .hero-title em {
   color: var(--teal);
@@ -419,7 +420,7 @@ img {
   max-width: 570px;
   margin: 27px 0 0;
   color: var(--muted);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.82;
 }
 
@@ -444,8 +445,7 @@ img {
   height: 8px;
   border-radius: 50%;
   background: var(--coral);
-  box-shadow: 0 0 0 5px rgba(231, 109, 77, .12);
-  animation: pulse-dot 2.8s ease-in-out infinite;
+  box-shadow: 0 0 0 4px rgba(23, 111, 103, .1);
 }
 
 .hero-visual-shell {
@@ -456,7 +456,7 @@ img {
   padding: 12px;
   border: 1px solid rgba(173, 196, 188, .82);
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(251, 252, 250, .86), rgba(224, 238, 232, .68));
+  background: linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(224, 238, 232, .56));
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   backdrop-filter: blur(18px) saturate(140%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .84), 0 20px 55px rgba(16, 36, 33, .12);
@@ -470,7 +470,7 @@ img {
   background-size: 220% 100%;
   content: '';
   pointer-events: none;
-  animation: glass-sheen 13s ease-in-out infinite;
+  animation: none;
 }
 
 .hero-visual-shell > * {
@@ -527,16 +527,14 @@ img {
   margin: 0;
   overflow: hidden;
   border: 1px solid rgba(160, 185, 176, .72);
-  border-radius: 3px;
-  background: #dfe7e3;
-  animation: visual-float 10s ease-in-out infinite;
+  border-radius: 12px;
+  background: #edf2ee;
 }
 
 .hero-visual img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  animation: image-breathe 10s ease-in-out infinite;
 }
 
 .hero-visual.is-cover img {
@@ -576,18 +574,21 @@ img {
 }
 
 .signal-bar {
-  border-bottom: 1px solid var(--line);
-  background: var(--paper-deep);
+  background: var(--paper);
 }
 
 .signal-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  padding-top: 24px;
+  padding-bottom: 24px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .signal-item {
-  min-height: 92px;
-  padding: 18px 20px;
+  min-height: 64px;
+  padding: 6px 24px;
   border-left: 1px solid var(--line);
 }
 
@@ -660,7 +661,7 @@ img {
   background-size: 220% 100%;
   content: '';
   pointer-events: none;
-  animation: glass-sheen 10s ease-in-out infinite;
+  animation: none;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -679,7 +680,7 @@ img {
   position: relative;
   z-index: 1;
   flex: 1;
-  min-height: 38px;
+  min-height: 44px;
   padding: 9px 10px;
   border: 0;
   border-radius: 2px;
@@ -735,11 +736,11 @@ img {
 }
 
 .project-card.is-featured {
-  border-top: 2px solid var(--teal);
+  border-top: 1px solid var(--line);
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-card);
 }
 
@@ -780,7 +781,7 @@ img {
 .project-media.is-contain,
 .detail-media.is-contain {
   padding: 16px 22px;
-  background: #cbd8d3;
+  background: #e7eee8;
 }
 
 .project-media.is-contain img,
@@ -791,11 +792,11 @@ img {
 }
 
 .project-card:hover .project-media img {
-  transform: scale(1.025);
+  transform: none;
 }
 
 .project-card:hover .project-media.is-contain img {
-  transform: scale(1.008);
+  transform: none;
 }
 
 .project-media::after {
@@ -815,7 +816,7 @@ img {
   background-size: 220% 100%;
   content: '';
   pointer-events: none;
-  animation: media-sheen 14s ease-in-out infinite;
+  display: none;
 }
 
 .project-media-label {
@@ -939,7 +940,9 @@ img {
 }
 
 .practice-section {
-  background: var(--night);
+  padding-top: 0;
+  padding-bottom: 0;
+  background: var(--paper);
   color: var(--paper-bright);
 }
 
@@ -947,6 +950,11 @@ img {
   display: grid;
   grid-template-columns: minmax(230px, .72fr) minmax(0, 1.28fr);
   gap: 74px;
+  width: calc(100% - 60px);
+  max-width: 1160px;
+  padding: 52px;
+  border-radius: 24px;
+  background: radial-gradient(ellipse at top right, #24483f, transparent 70%), var(--night);
 }
 
 .practice-section .section-label {
@@ -997,7 +1005,7 @@ img {
 }
 
 .about-section {
-  background: var(--paper-deep);
+  background: var(--paper);
 }
 
 .about-grid {
@@ -2140,7 +2148,7 @@ button:focus-visible {
   }
 
   .hero-title {
-    font-size: clamp(45px, 13vw, 66px);
+    font-size: clamp(34px, 8.8vw, 52px);
   }
 
   .hero-copy,
@@ -2184,7 +2192,7 @@ button:focus-visible {
   }
 
   .section-title {
-    font-size: clamp(33px, 10vw, 45px);
+    font-size: clamp(28px, 7.6vw, 40px);
   }
 
   .section-head-row {

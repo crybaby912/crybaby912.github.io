@@ -1,6 +1,8 @@
 ---
 import { featuredProject, projects } from '../data/projects';
+import SiteHeader from '../components/SiteHeader.astro';
 import '../styles/site.css';
+import '../styles/motion.css';
 
 const categories = ['ALL', ...new Set(projects.map((project) => project.category))];
 const totalIncidents = projects.reduce((count, project) => count + project.incidents.length, 0);
@@ -40,35 +42,24 @@ const methodSteps = [
     <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <a class="skip-link" href="#content">跳到主要内容</a>
     <div class="site-shell">
-      <header class="site-header">
-        <div class="container">
-          <a class="brand" href="#top" aria-label="返回首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
-          <nav id="site-nav" class="site-nav" aria-label="主导航">
-            <a href="#work" data-nav-link>项目 <span>01</span></a>
-            <a href="#approach" data-nav-link>方法 <span>02</span></a>
-            <a href="#about" data-nav-link>关于 <span>03</span></a>
-            <a class="nav-contact" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">GitHub ↗</a>
-          </nav>
-          <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="site-nav"><span>菜单</span><span class="menu-icon" aria-hidden="true">+</span></button>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main id="content">
         <section class="home-hero" aria-labelledby="hero-title">
           <div class="container hero-grid">
-            <div class="hero-intro" data-reveal>
-              <p class="eyebrow">全栈工程 / AI 应用 / 产品实现</p>
-              <p class="hero-index">个人案例集 · 2026</p>
-              <h1 id="hero-title" class="hero-title">把复杂业务，<br /><em>做成能被验证的系统。</em></h1>
-              <p class="hero-copy">这里记录我如何建模、排错、取舍和交付，而不是把功能截图简单堆在一起。每个案例都保留实现路径、关键 Bug 和可以复核的结果。</p>
-              <div class="hero-actions">
+            <div class="hero-intro">
+              <p class="eyebrow" data-reveal>后端 · 全栈 · AI 工程</p>
+              <p class="hero-index" data-reveal>CRYBABY912 / 个人案例集 · 2026</p>
+              <h1 id="hero-title" class="hero-title"><span data-reveal>把复杂业务，</span><em data-reveal>做成可靠系统。</em></h1>
+              <p class="hero-copy" data-reveal>从业务建模到工程交付，记录每一次排错、取舍与验证。用真实项目、故障复盘和可复核的结果，说明系统为什么这样设计。</p>
+              <div class="hero-actions" data-reveal>
                 <a class="button button-primary" href="#work">查看项目 <span aria-hidden="true">↓</span></a>
                 <a class="button button-quiet" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">访问 GitHub <span aria-hidden="true">↗</span></a>
               </div>
-              <div class="hero-note"><span class="status-dot" aria-hidden="true"></span><span>持续更新：把下一次迭代也写进案例</span></div>
+              <div class="hero-note" data-reveal><span class="status-dot" aria-hidden="true"></span><span>业务建模 <span aria-hidden="true">→</span> 系统实现 <span aria-hidden="true">→</span> 验证复盘</span></div>
             </div>
 
-            <div class="hero-visual-shell" data-reveal>
+            <div class="hero-visual-shell" data-reveal data-aperture data-ambient>
               <div class="visual-toolbar">
                 <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
                 <span>食汇外卖 / 商家工作台</span>
@@ -175,127 +166,5 @@ const methodSteps = [
 </html>
 
 <script>
-  document.documentElement.classList.add('js');
-
-  const header = document.querySelector('.site-header');
-  const menuToggle = document.querySelector('.menu-toggle');
-  const setMenu = (open) => {
-    header?.classList.toggle('nav-open', open);
-    menuToggle?.classList.toggle('is-open', open);
-    menuToggle?.setAttribute('aria-expanded', String(open));
-    menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
-    if (open) window.requestAnimationFrame(() => document.querySelector('.site-nav a')?.focus());
-  };
-
-  menuToggle?.addEventListener('click', () => setMenu(!header?.classList.contains('nav-open')));
-  document.querySelectorAll('.site-nav a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && header?.classList.contains('nav-open')) {
-      setMenu(false);
-      menuToggle?.focus();
-    }
-  });
-  document.addEventListener('click', (event) => {
-    if (header && !header.contains(event.target)) setMenu(false);
-  });
-
-  const filters = [...document.querySelectorAll('[data-filter]')];
-  const cards = [...document.querySelectorAll('[data-category]')];
-  const filterStatus = document.querySelector('[data-filter-status]');
-  const applyFilter = (card, matches) => {
-    window.clearTimeout(card.filterTimer);
-    if (matches) {
-      card.hidden = false;
-      window.requestAnimationFrame(() => card.classList.remove('is-filtering'));
-    } else {
-      card.classList.add('is-filtering');
-      card.filterTimer = window.setTimeout(() => {
-        card.hidden = true;
-        card.classList.remove('is-filtering');
-      }, 240);
-    }
-  };
-
-  filters.forEach((filter) => {
-    filter.addEventListener('click', () => {
-      const category = filter.getAttribute('data-filter');
-      const visible = cards.filter((card) => category === 'ALL' || card.getAttribute('data-category') === category).length;
-      filters.forEach((item) => item.setAttribute('aria-pressed', String(item === filter)));
-      cards.forEach((card) => applyFilter(card, category === 'ALL' || card.getAttribute('data-category') === category));
-      if (filterStatus) filterStatus.textContent = category === 'ALL' ? '显示全部 ' + visible + ' 个项目' : category + ' · ' + visible + ' 个项目';
-    });
-  });
-
-  const progress = document.querySelector('.scroll-progress span');
-  let scrollFrame = 0;
-  const updateScrollState = () => {
-    scrollFrame = 0;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress?.style.setProperty('transform', 'scaleX(' + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ')');
-    header?.classList.toggle('is-scrolled', window.scrollY > 12);
-  };
-  window.addEventListener('scroll', () => {
-    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollState);
-  }, { passive: true });
-  updateScrollState();
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealTargets = [...document.querySelectorAll('[data-reveal]')];
-  const show = (item) => item.classList.add('is-visible');
-  if (reducedMotion || !('IntersectionObserver' in window)) {
-    revealTargets.forEach(show);
-  } else {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          show(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -36px' });
-    revealTargets.forEach((item) => revealObserver.observe(item));
-  }
-
-  const countTargets = [...document.querySelectorAll('[data-count]')];
-  const animateCount = (element) => {
-    if (element.dataset.counted) return;
-    element.dataset.counted = 'true';
-    const target = Number(element.getAttribute('data-count'));
-    if (reducedMotion || !Number.isFinite(target)) {
-      element.textContent = String(target);
-      return;
-    }
-    const startedAt = performance.now();
-    const tick = (now) => {
-      const progressValue = Math.min((now - startedAt) / 720, 1);
-      element.textContent = String(Math.round(target * (1 - Math.pow(1 - progressValue, 3))));
-      if (progressValue < 1) window.requestAnimationFrame(tick);
-    };
-    element.textContent = '0';
-    window.requestAnimationFrame(tick);
-  };
-  if (reducedMotion || !('IntersectionObserver' in window)) countTargets.forEach(animateCount);
-  else {
-    const countObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.8 });
-    countTargets.forEach((item) => countObserver.observe(item));
-  }
-
-  const navLinks = [...document.querySelectorAll('[data-nav-link]')];
-  const sections = [...document.querySelectorAll('[data-section]')];
-  if ('IntersectionObserver' in window) {
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === '#' + entry.target.getAttribute('data-section')));
-      });
-    }, { rootMargin: '-35% 0px -55% 0px' });
-    sections.forEach((section) => sectionObserver.observe(section));
-  }
+  import '../scripts/home';
 </script>

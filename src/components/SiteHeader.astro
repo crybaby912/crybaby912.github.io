@@ -1,0 +1,24 @@
+---
+interface Props { detail?: boolean }
+const { detail = false } = Astro.props;
+---
+<header class:list={['site-header', { 'is-detail': detail }]}>
+  <div class="container">
+    <a class="brand" href={detail ? '/' : '#top'} aria-label="返回作品集首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
+    <div class="header-actions">
+      {detail ? <a class="back-link" href="/#work">← 全部项目</a> : (
+        <nav id="site-nav" class="site-nav" aria-label="主导航">
+          <a href="#work" data-nav-link>项目 <span>01</span></a>
+          <a href="#approach" data-nav-link>方法 <span>02</span></a>
+          <a href="#about" data-nav-link>关于 <span>03</span></a>
+          <a class="nav-contact" href="https://github.com/crybaby912" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </nav>
+      )}
+      <button type="button" class="motion-toggle" data-motion-toggle hidden aria-pressed="false"><span class="motion-symbol" aria-hidden="true"><i></i><i></i></span><span data-motion-label>暂停动效</span></button>
+      {!detail && <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="site-nav"><span>菜单</span><span class="menu-icon" aria-hidden="true">+</span></button>}
+    </div>
+  </div>
+</header>
+<script>
+  import '../scripts/site';
+</script>

@@ -30,15 +30,18 @@ npm run preview
 
 ```text
 src/
+├─ components/SiteHeader.astro   共享玻璃导航与动效开关
 ├─ data/projects.ts              项目数据与案例内容
+├─ scripts/                      弹簧、展开、显影与页面交互
 ├─ styles/site.css               首页与详情页共享视觉系统
+├─ styles/motion.css             玻璃表面、动效与无障碍降级
 └─ pages/
    ├─ index.astro                作品集首页
    ├─ 404.astro                  GitHub Pages 自定义 404
    └─ projects/[slug].astro      项目详情页模板
 public/
-├─ ai-agent-workflow-demo.gif    AI 工作流真实界面演示
-└─ projects/food-take-out/       食汇外卖用户端与商家端截图
+├─ licenses/design-systems.txt   动效来源与 MIT 许可
+└─ projects/                     两个项目的真实截图与预览
 .github/workflows/deploy.yml     GitHub Pages 自动部署
 ```
 
@@ -55,6 +58,14 @@ public/
 - 实现过程：问题约束、工作流、系统分层
 - 工程复盘：关键取舍、故障现象、根因与修复
 - 交付证据：测试范围、验证结果和下一步
+
+## 动效来源与约束
+
+动效改编自 [design-systems](https://github.com/ruiqichenbiec/design-systems) 的 Lens 弹簧、玻璃表面和 Overture 展开、显影、FLIP 换位规则。固定版本与完整 MIT 许可见 `public/licenses/design-systems.txt`。
+
+页面使用原生 CSS、Web Animations API 和按需运行的弹簧计算，不引入整套 WebGL/WebGPU、音频或示例资源。玻璃效果是 CSS 透明、模糊与高光的近似表现，不是真实光学折射。截图保持完整，不做循环缩放。
+
+导航提供“暂停动效”；系统开启减少动态效果时自动停用。离屏装饰停止运行，禁用 JavaScript 时正文与项目链接仍可阅读。
 
 ## 发布
 
