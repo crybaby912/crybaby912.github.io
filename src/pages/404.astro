@@ -1,5 +1,6 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import '../styles/site.css';
 import '../styles/motion.css';
 const pageTitle = '页面未找到 / CRYBABY912';
@@ -29,7 +30,7 @@ const pageTitle = '页面未找到 / CRYBABY912';
           </div>
         </div>
       </main>
-      <footer class="site-footer"><span>© 2026 CRYBABY912</span><span>页面未找到 · 404</span></footer>
+      <SiteFooter note="页面未找到 · 404" showBackToTop={false} />
     </div>
   </body>
 </html>

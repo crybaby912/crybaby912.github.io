@@ -105,7 +105,7 @@
 .button:hover span, .text-link:hover span { transform: translate(2px, -2px); }
 .button:active { transform: scale(.98); }
 .tag { border-radius: 6px; }
-.signal-value { transform-origin: center bottom; }
+.summary-value { transform-origin: center bottom; }
 .section-intro { line-height: 1.85; }
 .project-card { transition: transform 300ms var(--ease-settle), box-shadow 300ms; }
 .project-card:focus-within { box-shadow: 0 0 0 2px var(--teal); }
@@ -265,7 +265,7 @@ html.lightbox-open { overflow: hidden; }
   .hero-intro { max-width: 640px; }
   .hero-visual-shell { width: 100%; }
   .hero-title { font-size: clamp(42px, 6.7vw, 62px); }
-  .practice-grid { padding: 40px; gap: 32px; }
+  .practice-grid { gap: 32px; }
 }
 @media (max-width: 680px) {
   html { scroll-padding-top: 94px; }
@@ -292,10 +292,6 @@ html.lightbox-open { overflow: hidden; }
   .hero-visual-shell { padding: 9px; }
   .hero-visual-footer { flex-direction: row; align-items: center; font-size: 10px; }
   .hero-visual-footer > span { max-width: 60%; }
-  .signal-grid { padding-block: 16px; }
-  .signal-item { padding: 16px; }
-  .practice-grid { width: calc(100% - 32px); padding: 30px 24px; border-radius: 20px; }
-  .practice-section { padding-block: 0; }
   .case-nav-wrap { top: 72px; max-width: calc(100% - 24px); }
   .case-nav { gap: 2px; }
   .case-nav a { min-width: 50px; padding-inline: 10px; }

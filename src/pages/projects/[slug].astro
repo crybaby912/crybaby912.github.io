@@ -1,6 +1,7 @@
 ---
 import { projects } from '../../data/projects';
 import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
 import '../../styles/site.css';
 import '../../styles/motion.css';
 
@@ -251,7 +252,7 @@ const socialImage = new URL(project.cover, Astro.site);
         </section>
       </main>
 
-      <footer class="detail-footer"><span>© 2026 CRYBABY912</span><span>{project.title} / 项目案例</span><a href="#top">回到顶部 ↑</a></footer>
+      <SiteFooter note={project.title + ' / 项目案例'} />
     </div>
   </body>
 </html>
