@@ -158,8 +158,6 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stopD
 
 document.querySelectorAll<HTMLDetailsElement>('.incident-more').forEach((details) => {
   details.addEventListener('toggle', () => {
-    const label = details.querySelector('summary span:last-child');
-    if (label) label.textContent = details.open ? '收起复盘' : '展开查看';
     const content = details.querySelector('.incident-more-grid');
     if (details.open && content) void animate(content, [{ opacity: 0, transform: 'translateY(-10px)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
   });

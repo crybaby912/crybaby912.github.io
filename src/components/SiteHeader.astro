@@ -1,12 +1,22 @@
 ---
-interface Props { detail?: boolean }
-const { detail = false } = Astro.props;
+interface Props {
+  detail?: boolean;
+  caseSections?: { id: string; label: string }[];
+}
+const { detail = false, caseSections = [] } = Astro.props;
+const hasCaseNav = detail && caseSections.length > 0;
 ---
-<header class:list={['site-header', { 'is-detail': detail }]}>
+<header class:list={['site-header', { 'is-detail': detail, 'has-case-nav': hasCaseNav }]}>
   <div class="container">
     <a class="brand" href={detail ? '/' : '#top'} aria-label="返回作品集首页"><span class="brand-mark">C9</span><span>CRYBABY912</span></a>
+    {hasCaseNav && (
+      <nav id="case-nav" class="case-nav" aria-label="案例章节">
+        {caseSections.map((section, index) => <a href={'#' + section.id} data-nav-link aria-current={index === 0 ? 'location' : undefined}><span>0{index + 1}</span>{section.label}</a>)}
+      </nav>
+    )}
     <div class="header-actions">
-      {detail ? <a class="back-link" href="/#work">← 全部项目</a> : (
+      {hasCaseNav && <button class="menu-toggle case-menu-toggle" type="button" data-menu-label="案例目录" aria-label="打开案例目录" aria-expanded="false" aria-controls="case-nav"><span>目录</span><span class="menu-icon" aria-hidden="true">+</span></button>}
+      {detail ? <a class="back-link" href="/#work" aria-label="返回全部项目" title="返回全部项目"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 6-6 6 6 6M6 12h12" /></svg><span class="back-link-label">全部项目</span></a> : (
         <nav id="site-nav" class="site-nav" aria-label="主导航">
           <a href="#work" data-nav-link>项目 <span>01</span></a>
           <a href="#approach" data-nav-link>方法 <span>02</span></a>

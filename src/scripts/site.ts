@@ -28,29 +28,31 @@ revealPage();
 
 const header = document.querySelector<HTMLElement>('.site-header');
 const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-const nav = document.querySelector<HTMLElement>('.site-nav');
+const nav = document.querySelector<HTMLElement>('.site-nav, .case-nav');
+const sectionNav = document.querySelector<HTMLElement>('.case-nav');
+const indicator = sectionNav ? selectionIndicator(sectionNav, '[aria-current="location"]') : undefined;
+const menuLabel = toggle?.dataset.menuLabel ?? '导航';
 const setMenu = (open: boolean, restoreFocus = false) => {
   header?.classList.toggle('nav-open', open);
   toggle?.classList.toggle('is-open', open);
   toggle?.setAttribute('aria-expanded', String(open));
-  toggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+  toggle?.setAttribute('aria-label', `${open ? '关闭' : '打开'}${menuLabel}`);
   if (open && nav) {
+    indicator?.(true);
     void animate(nav, [{ opacity: 0, transform: 'translateY(-8px) scale(.98)' }, { opacity: 1, transform: 'none' }], { duration: 260 });
-    nav.querySelector<HTMLElement>('a')?.focus();
-  } else if (restoreFocus) toggle?.focus();
+    (nav.querySelector<HTMLElement>('a[aria-current="location"]') ?? nav.querySelector<HTMLElement>('a'))?.focus({ preventScroll: true });
+  } else if (restoreFocus) toggle?.focus({ preventScroll: true });
 };
 toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
 nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') setMenu(false, true); });
 document.addEventListener('click', (event) => { if (!header?.contains(event.target as Node)) setMenu(false); });
 document.addEventListener('focusin', (event) => { if (!header?.contains(event.target as Node)) setMenu(false); });
-window.matchMedia('(min-width: 681px)').addEventListener('change', () => setMenu(false));
+window.matchMedia(`(min-width: ${sectionNav ? 981 : 681}px)`).addEventListener('change', () => setMenu(false));
 
 const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
 const sections = [...document.querySelectorAll<HTMLElement>('[data-section]')];
 const progress = document.querySelector<HTMLElement>('.scroll-progress span');
-const sectionNav = document.querySelector<HTMLElement>('.case-nav');
-const indicator = sectionNav ? selectionIndicator(sectionNav, '[aria-current="location"]') : undefined;
 let frame = 0;
 const updateScroll = () => {
   frame = 0;
